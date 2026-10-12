@@ -17,6 +17,8 @@ class Batch extends Model
     public const STATUS_FLAGGED = 'flagged';
     public const STATUS_HANDED_OVER = 'handed_over';
 
+    public const GRADES = ['ALBA', 'C5', 'C4', 'H1'];
+
     protected $fillable = [
         'grower_id',
         'plot',
