@@ -1,21 +1,16 @@
 <script setup>
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Link } from '@inertiajs/vue3';
+import CinnamonMark from '@/Components/CinnamonMark.vue';
 </script>
 
 <template>
-    <div
-        class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0"
-    >
-        <div>
-            <Link href="/">
-                <ApplicationLogo class="h-20 w-20 fill-current text-gray-500" />
-            </Link>
-        </div>
+    <div class="cin-guest flex min-h-screen flex-col items-center justify-center px-4 py-10">
+        <Link href="/" class="flex items-center gap-3 text-white">
+            <CinnamonMark :size="48" />
+            <span class="font-display text-2xl font-bold">Cinnamon Passport</span>
+        </Link>
 
-        <div
-            class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
-        >
+        <div class="cin-card mt-6 w-full overflow-hidden px-6 py-6 sm:max-w-md">
             <slot />
         </div>
     </div>

@@ -1,22 +1,25 @@
 <?php
 
+use App\Http\Controllers\BatchController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\BatchController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+// After login, each role goes to its own home page.
+Route::get('/dashboard', function (Request $request) {
+    return match ($request->user()->role) {
+        'collector' => redirect()->route('collector.home'),
+        'buyer' => redirect()->route('buyer.home'),
+        default => redirect()->route('batches.index'),
+    };
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -25,14 +28,24 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'role:grower'])->get('/grower', fn () => 'Grower area');
-Route::middleware(['auth', 'role:collector'])->get('/collector', fn () => 'Collector area');
-Route::middleware(['auth', 'role:buyer'])->get('/buyer', fn () => 'Buyer area');
-
 Route::middleware(['auth', 'role:grower'])->group(function () {
     Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
     Route::get('/batches/create', [BatchController::class, 'create'])->name('batches.create');
     Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
 });
+
+Route::middleware(['auth', 'role:collector'])->get('/collector', function () {
+    return Inertia::render('ComingSoon', [
+        'title' => 'Collector area',
+        'message' => 'Handover confirmation and batch review will appear here.',
+    ]);
+})->name('collector.home');
+
+Route::middleware(['auth', 'role:buyer'])->get('/buyer', function () {
+    return Inertia::render('ComingSoon', [
+        'title' => 'Buyer area',
+        'message' => 'Batch verification by QR code will appear here.',
+    ]);
+})->name('buyer.home');
 
 require __DIR__.'/auth.php';

@@ -8,7 +8,8 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <meta name="theme-color" content="#2E170C">
+        <link href="https://fonts.bunny.net/css?family=bricolage-grotesque:600,700|hanken-grotesk:400,500,600,700&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @routes
