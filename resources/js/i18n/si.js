@@ -84,4 +84,13 @@ export default {
     'auth.remember': 'මාව මතක තබාගන්න',
     'auth.forgot': 'මුරපදය අමතකද?',
     'auth.already': 'දැනටමත් ලියාපදිංචි වී ඇතිද?',
+
+    // si.js
+    'sms.title': 'SMS අනුකරණය',
+    'sms.hint': 'ගොවියෙක් එවන ආකාරයටම SMS එක ටයිප් කරන්න. දුරකථනයේ අන්තර්ජාලයක් හෝ app එකක් අවශ්‍ය නැහැ.',
+    'sms.empty': 'තවම පණිවිඩයක් නැහැ. පහත උදාහරණයක් උත්සාහ කරන්න.',
+    'sms.placeholder': 'තොගය P1 40KG 12OCT DRY3 ALBA',
+    'sms.send': 'SMS යවන්න',
+    'sms.examples': 'උදාහරණ (ඔබා පුරවන්න):',
+    'nav.myBatches': 'මගේ තොග',
 };

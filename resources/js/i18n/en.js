@@ -84,4 +84,13 @@ export default {
     'auth.remember': 'Remember me',
     'auth.forgot': 'Forgot your password?',
     'auth.already': 'Already registered?',
+
+    // en.js
+    'sms.title': 'SMS simulator',
+    'sms.hint': 'Type an SMS exactly as a farmer would send it. No internet or app is needed on the phone.',
+    'sms.empty': 'No message yet. Try an example below.',
+    'sms.placeholder': 'BATCH P1 40KG 12OCT DRY3 ALBA',
+    'sms.send': 'Send SMS',
+    'sms.examples': 'Examples (tap to fill):',
+    'nav.myBatches': 'My batches',
 };

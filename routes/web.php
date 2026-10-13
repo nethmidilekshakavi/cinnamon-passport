@@ -48,4 +48,7 @@ Route::middleware(['auth', 'role:buyer'])->get('/buyer', function () {
     ]);
 })->name('buyer.home');
 
+Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
+Route::post('/sms', [SmsController::class, 'store'])->name('sms.store');
+
 require __DIR__.'/auth.php';
