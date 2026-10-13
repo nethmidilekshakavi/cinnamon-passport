@@ -36,15 +36,15 @@ Route::middleware(['auth', 'role:grower'])->group(function () {
 
 Route::middleware(['auth', 'role:collector'])->get('/collector', function () {
     return Inertia::render('ComingSoon', [
-        'title' => 'Collector area',
-        'message' => 'Handover confirmation and batch review will appear here.',
+        'titleKey' => 'nav.collectorArea',
+        'messageKey' => 'soon.collector',
     ]);
 })->name('collector.home');
 
 Route::middleware(['auth', 'role:buyer'])->get('/buyer', function () {
     return Inertia::render('ComingSoon', [
-        'title' => 'Buyer area',
-        'message' => 'Batch verification by QR code will appear here.',
+        'titleKey' => 'nav.buyerArea',
+        'messageKey' => 'soon.buyer',
     ]);
 })->name('buyer.home');
 

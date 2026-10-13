@@ -9,8 +9,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <meta name="theme-color" content="#2E170C">
-        <link href="https://fonts.bunny.net/css?family=bricolage-grotesque:600,700|hanken-grotesk:400,500,600,700&display=swap" rel="stylesheet" />
-
+        <link href="https://fonts.bunny.net/css?family=bricolage-grotesque:600,700|hanken-grotesk:400,500,600,700|noto-sans-sinhala:400,500,600,700|noto-sans-tamil:400,500,600,700&display=swap" rel="stylesheet" />
         <!-- Scripts -->
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])

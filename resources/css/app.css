@@ -164,3 +164,31 @@ input[type='checkbox'] { color: var(--bark-700); }
     .cin-splash-bar span { animation: none; transform: scaleX(1); }
     .cin-fade-leave-active { transition: none; }
 }
+
+/* Language switcher and picker */
+.cin-lang { display: inline-flex; flex-wrap: wrap; gap: 0.35rem; }
+.cin-lang-btn {
+    padding: 0.2rem 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 9999px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+.cin-lang-btn:hover { border-color: #fff; color: #fff; }
+.cin-lang-btn:focus-visible { outline: 2px solid var(--quill); outline-offset: 2px; }
+.cin-lang-active { background: var(--quill); border-color: var(--quill); color: var(--bark-900); }
+
+.cin-picker { padding: 1.5rem; text-align: center; gap: 1.5rem; }
+.cin-picker-title { display: flex; flex-direction: column; gap: 0.25rem; color: #fff; font-size: 1.15rem; font-weight: 600; }
+.cin-picker-list { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; max-width: 20rem; }
+.cin-picker-btn { width: 100%; padding: 0.9rem 1.25rem; font-size: 1.3rem; }
+
+/* Sinhala and Tamil need Noto fonts, looser lines and no negative letter spacing */
+body.font-sans { font-family: 'Hanken Grotesk', 'Noto Sans Sinhala', 'Noto Sans Tamil', ui-sans-serif, system-ui, sans-serif; }
+.font-display { font-family: 'Bricolage Grotesque', 'Noto Sans Sinhala', 'Noto Sans Tamil', ui-sans-serif, system-ui, sans-serif; }
+.cin-h1 { line-height: 1.1; }
+html[lang='si'] body, html[lang='ta'] body { line-height: 1.75; }
+html[lang='si'] .font-display, html[lang='ta'] .font-display { letter-spacing: 0; }
+html[lang='si'] .cin-h1, html[lang='ta'] .cin-h1 { line-height: 1.4; }

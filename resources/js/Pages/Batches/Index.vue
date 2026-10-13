@@ -1,35 +1,45 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
+import { useI18n } from '@/i18n';
 
 defineProps({ batches: Array });
+
+const { t } = useI18n();
+
+// Show the translated status when one exists, otherwise the raw value.
+const statusLabel = (status) => {
+    const key = `status.${status}`;
+    const label = t(key);
+    return label === key ? status : label;
+};
 </script>
 
 <template>
-    <Head title="My batches" />
+    <Head :title="t('batch.listTitle')" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">My batches</h2>
+            <h2 class="font-display text-xl font-bold">{{ t('batch.listTitle') }}</h2>
         </template>
 
         <div class="py-12">
             <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-                <Link :href="route('batches.create')" class="mb-4 inline-block rounded-md bg-gray-800 px-4 py-2 text-sm text-white">
-                    New batch
+                <Link :href="route('batches.create')" class="cin-btn mb-4">
+                    {{ t('nav.newBatch') }}
                 </Link>
 
-                <div class="overflow-x-auto bg-white shadow sm:rounded-lg">
+                <div class="cin-card overflow-x-auto">
                     <table class="min-w-full text-left text-sm">
                         <thead class="bg-gray-50 text-gray-600">
                         <tr>
-                            <th class="px-4 py-2">Code</th>
-                            <th class="px-4 py-2">Plot</th>
-                            <th class="px-4 py-2">Kg</th>
-                            <th class="px-4 py-2">Harvest</th>
-                            <th class="px-4 py-2">Drying</th>
-                            <th class="px-4 py-2">Grade</th>
-                            <th class="px-4 py-2">Status</th>
+                            <th class="px-4 py-2">{{ t('batch.col.code') }}</th>
+                            <th class="px-4 py-2">{{ t('batch.col.plot') }}</th>
+                            <th class="px-4 py-2">{{ t('batch.col.kg') }}</th>
+                            <th class="px-4 py-2">{{ t('batch.col.harvest') }}</th>
+                            <th class="px-4 py-2">{{ t('batch.col.drying') }}</th>
+                            <th class="px-4 py-2">{{ t('batch.col.grade') }}</th>
+                            <th class="px-4 py-2">{{ t('batch.col.status') }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -38,12 +48,12 @@ defineProps({ batches: Array });
                             <td class="px-4 py-2">{{ b.plot }}</td>
                             <td class="px-4 py-2">{{ b.weight_kg }}</td>
                             <td class="px-4 py-2">{{ String(b.harvest_date).slice(0, 10) }}</td>
-                            <td class="px-4 py-2">{{ b.drying_days }} d</td>
+                            <td class="px-4 py-2">{{ b.drying_days }} {{ t('batch.days') }}</td>
                             <td class="px-4 py-2">{{ b.grade ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ b.status }}</td>
+                            <td class="px-4 py-2">{{ statusLabel(b.status) }}</td>
                         </tr>
                         <tr v-if="batches.length === 0">
-                            <td colspan="7" class="px-4 py-6 text-center text-gray-500">No batches yet.</td>
+                            <td colspan="7" class="px-4 py-6 text-center text-gray-500">{{ t('batch.empty') }}</td>
                         </tr>
                         </tbody>
                     </table>

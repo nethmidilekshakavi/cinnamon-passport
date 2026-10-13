@@ -1,8 +1,6 @@
 <script setup>
 defineProps({
-    value: {
-        type: String,
-    },
+    value: { type: String },
 });
 </script>
 
