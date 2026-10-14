@@ -93,4 +93,12 @@ export default {
     'sms.send': 'Send SMS',
     'sms.examples': 'Examples (tap to fill):',
     'nav.myBatches': 'My batches',
+
+    // en.js
+    'flag.WEIGHT_HIGH': 'Very heavy batch',
+    'flag.DRYING_SHORT': 'Drying too short',
+    'flag.DRYING_LONG': 'Drying too long',
+    'flag.LATE_LOG': 'Logged late',
+    'flag.DUPLICATE': 'Possible duplicate',
+    'flag.WEIGHT_JUMP': 'Weight jump vs usual',
 };

@@ -93,4 +93,12 @@ export default {
     'sms.send': 'SMS அனுப்பு',
     'sms.examples': 'எடுத்துக்காட்டுகள் (தொட்டு நிரப்பவும்):',
     'nav.myBatches': 'என் தொகுதிகள்',
+
+    // ta.js
+    'flag.WEIGHT_HIGH': 'மிகவும் அதிக எடை',
+    'flag.DRYING_SHORT': 'உலர்த்தல் மிகக் குறைவு',
+    'flag.DRYING_LONG': 'உலர்த்தல் மிக நீளம்',
+    'flag.LATE_LOG': 'தாமதமாகப் பதிவு',
+    'flag.DUPLICATE': 'நகலாக இருக்கலாம்',
+    'flag.WEIGHT_JUMP': 'வழக்கத்தை விட எடை அதிகம்',
 };

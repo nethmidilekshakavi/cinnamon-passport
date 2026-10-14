@@ -42,3 +42,19 @@ it('blocks non-growers from the simulator', function () {
 
     $this->actingAs($collector)->get('/sms')->assertForbidden();
 });
+
+
+it('flags an abnormal SMS batch and keeps a normal one recorded', function () {
+    $user = User::factory()->create(['role' => User::ROLE_GROWER]);
+
+    $this->actingAs($user)->post('/sms', ['message' => 'BATCH P1 250KG 12OCT DRY1']);
+    $this->actingAs($user)->post('/sms', ['message' => 'BATCH P2 40KG 11OCT DRY3']);
+
+    $flagged = $user->batches()->where('plot', 'P1')->first();
+    $normal = $user->batches()->where('plot', 'P2')->first();
+
+    expect($flagged->status)->toBe(Batch::STATUS_FLAGGED)
+        ->and($flagged->flags)->toContain('WEIGHT_HIGH', 'DRYING_SHORT')
+        ->and($normal->status)->toBe(Batch::STATUS_RECORDED)
+        ->and($normal->flags)->toBe([]);
+});

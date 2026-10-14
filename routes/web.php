@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SmsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,10 +29,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Grower area: batches (app form) and the SMS simulator.
 Route::middleware(['auth', 'role:grower'])->group(function () {
     Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
     Route::get('/batches/create', [BatchController::class, 'create'])->name('batches.create');
     Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
+
+    Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
+    Route::post('/sms', [SmsController::class, 'store'])->name('sms.store');
 });
 
 Route::middleware(['auth', 'role:collector'])->get('/collector', function () {
@@ -47,8 +52,5 @@ Route::middleware(['auth', 'role:buyer'])->get('/buyer', function () {
         'messageKey' => 'soon.buyer',
     ]);
 })->name('buyer.home');
-
-Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
-Route::post('/sms', [SmsController::class, 'store'])->name('sms.store');
 
 require __DIR__.'/auth.php';

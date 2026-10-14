@@ -36,6 +36,7 @@ class Batch extends Model
         return [
             'harvest_date' => 'date',
             'weight_kg' => 'decimal:2',
+            'flags' => 'array',
         ];
     }
 

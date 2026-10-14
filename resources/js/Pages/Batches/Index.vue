@@ -50,7 +50,18 @@ const statusLabel = (status) => {
                             <td class="px-4 py-2">{{ String(b.harvest_date).slice(0, 10) }}</td>
                             <td class="px-4 py-2">{{ b.drying_days }} {{ t('batch.days') }}</td>
                             <td class="px-4 py-2">{{ b.grade ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ statusLabel(b.status) }}</td>
+                            <td class="px-4 py-2">
+                                {{ statusLabel(b.status) }}
+                                <div v-if="b.flags && b.flags.length" class="mt-1 flex flex-wrap gap-1">
+        <span
+            v-for="f in b.flags"
+            :key="f"
+            class="rounded bg-red-50 px-2 py-0.5 text-xs text-red-700"
+        >
+            {{ t('flag.' + f) }}
+        </span>
+                                </div>
+                            </td>
                         </tr>
                         <tr v-if="batches.length === 0">
                             <td colspan="7" class="px-4 py-6 text-center text-gray-500">{{ t('batch.empty') }}</td>

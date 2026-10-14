@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Batch;
+use App\Services\AnomalyDetector;
 use App\Services\SmsParser;
 use App\Services\SmsReplies;
 use Illuminate\Http\RedirectResponse;
@@ -19,7 +20,7 @@ class SmsController extends Controller
         ]);
     }
 
-    public function store(Request $request, SmsParser $parser): RedirectResponse
+    public function store(Request $request, SmsParser $parser, AnomalyDetector $detector): RedirectResponse
     {
         $text = $request->validate([
             'message' => ['required', 'string', 'max:160'],
@@ -35,6 +36,9 @@ class SmsController extends Controller
                     'status' => Batch::STATUS_RECORDED,
                 ]);
             $batch->refresh();
+
+            // Flag unusual batches (heavy, too little drying, duplicate, ...).
+            $detector->flag($batch);
 
             $code = $batch->code;
             $reply = SmsReplies::success($lang, $batch);

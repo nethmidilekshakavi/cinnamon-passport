@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBatchRequest;
 use App\Models\Batch;
+use App\Services\AnomalyDetector;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,7 +17,7 @@ class BatchController extends Controller
         $batches = $request->user()
             ->batches()
             ->latest()
-            ->get(['id', 'code', 'plot', 'weight_kg', 'harvest_date', 'drying_days', 'grade', 'status', 'source']);
+            ->get(['id', 'code', 'plot', 'weight_kg', 'harvest_date', 'drying_days', 'grade', 'status', 'source', 'flags']);
 
         return Inertia::render('Batches/Index', ['batches' => $batches]);
     }
@@ -26,11 +27,16 @@ class BatchController extends Controller
         return Inertia::render('Batches/Create', ['grades' => Batch::GRADES]);
     }
 
-    public function store(StoreBatchRequest $request): RedirectResponse
+    public function store(StoreBatchRequest $request, AnomalyDetector $detector): RedirectResponse
     {
-        $request->user()->batches()->create(
-            $request->validated() + ['source' => Batch::SOURCE_APP]
+        $batch = $request->user()->batches()->create(
+            $request->validated() + [
+                'source' => Batch::SOURCE_APP,
+                'status' => Batch::STATUS_RECORDED,
+            ]
         );
+
+        $detector->flag($batch);
 
         return redirect()->route('batches.index');
     }

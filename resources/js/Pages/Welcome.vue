@@ -16,7 +16,21 @@ const { t, chosen } = useI18n();
 const page = usePage();
 const user = computed(() => page.props.auth?.user ?? null);
 
-// The loading screen shows once per browser session.
+const img = {
+    hero: '/images/welcome/hero.jpg',
+    steps: [1, 2, 3, 4].map((n) => `/images/welcome/step${n}.jpg`),
+    built: '/images/welcome/built.jpg',
+    cornerTop: '/images/welcome/quills.png', // optional transparent PNG for corners
+};
+
+
+const hideOnError = (e) => {
+    const frame = e.target.closest('.cin-photo');
+    if (frame) frame.style.display = 'none';
+    else e.target.style.display = 'none';
+};
+
+
 const seen = (() => {
     try {
         return sessionStorage.getItem('cp_splash') === '1';
@@ -26,7 +40,6 @@ const seen = (() => {
 })();
 const showSplash = ref(!seen);
 
-// After the loading screen, a visitor who has not chosen a language yet picks one.
 const showPicker = computed(() => !showSplash.value && !chosen.value);
 
 onMounted(() => {
@@ -34,14 +47,13 @@ onMounted(() => {
     try {
         sessionStorage.setItem('cp_splash', '1');
     } catch {
-        // storage blocked: the splash simply shows again next time
+        // storage blocked
     }
     setTimeout(() => {
         showSplash.value = false;
     }, 2000);
 });
 
-// Decorative sample QR code (not a real code).
 const qrCells = (() => {
     const size = 11;
     let seed = 42;
@@ -84,8 +96,22 @@ const points = computed(() =>
     </Transition>
 
     <div class="min-h-screen">
-        <header class="cin-hero">
+        <header class="cin-hero relative overflow-hidden">
+            <!-- Background photo, darkened so the text stays readable -->
+            <img
+                :src="img.hero"
+                alt=""
+                aria-hidden="true"
+                class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-30 mix-blend-luminosity"
+                @error="hideOnError"
+            />
+            <div class="pointer-events-none absolute inset-0" style="background: linear-gradient(100deg, rgba(38,22,17,.92) 35%, rgba(38,22,17,.35) 100%)"></div>
+
             <CinnamonMark :size="640" class="cin-bg-mark" />
+
+            <!-- Corner decoration -->
+            <img :src="img.cornerTop" alt="" aria-hidden="true" class="pointer-events-none absolute -right-10 -top-10 hidden w-64 rotate-12 opacity-80 md:block" @error="hideOnError" />
+            <img :src="img.cornerTop" alt="" aria-hidden="true" class="pointer-events-none absolute -bottom-12 -left-12 hidden w-56 -rotate-[20deg] opacity-60 md:block" @error="hideOnError" />
 
             <div class="relative mx-auto max-w-6xl px-6 pt-6">
                 <nav class="flex flex-wrap items-center justify-between gap-4">
@@ -159,6 +185,9 @@ const points = computed(() =>
             <h2 class="font-display text-3xl font-bold">{{ t('welcome.travelTitle') }}</h2>
             <ol class="mt-8 grid gap-8 md:grid-cols-4">
                 <li v-for="(s, i) in steps" :key="i" class="pt-4" style="border-top: 2px solid var(--bark-900)">
+                    <div class="cin-photo mb-4 aspect-[4/3] overflow-hidden rounded-md" style="background: var(--line)">
+                        <img :src="img.steps[i]" :alt="s.title" loading="lazy" class="h-full w-full object-cover" @error="hideOnError" />
+                    </div>
                     <span class="font-display text-3xl font-bold" style="color: var(--bark-700)">{{ i + 1 }}</span>
                     <h3 class="mt-2 text-lg font-semibold">{{ s.title }}</h3>
                     <p class="cin-muted mt-1">{{ s.text }}</p>
@@ -167,17 +196,22 @@ const points = computed(() =>
         </section>
 
         <section class="bg-white">
-            <div class="mx-auto max-w-6xl px-6 py-16 md:py-20">
-                <h2 class="font-display max-w-xl text-3xl font-bold">{{ t('welcome.builtTitle') }}</h2>
-                <div class="mt-8 grid gap-8 md:grid-cols-3">
-                    <div
-                        v-for="(p, i) in points"
-                        :key="i"
-                        class="md:border-l md:pl-6 md:first:border-l-0 md:first:pl-0"
-                        style="border-color: var(--line)"
-                    >
-                        <h3 class="text-lg font-semibold">{{ p.title }}</h3>
-                        <p class="cin-muted mt-1">{{ p.text }}</p>
+            <div class="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 md:grid-cols-5 md:py-20">
+                <div class="cin-photo order-last aspect-[4/5] overflow-hidden rounded-md md:order-none md:col-span-2" style="background: var(--line)">
+                    <img :src="img.built" alt="" loading="lazy" class="h-full w-full object-cover" @error="hideOnError" />
+                </div>
+                <div class="md:col-span-3">
+                    <h2 class="font-display max-w-xl text-3xl font-bold">{{ t('welcome.builtTitle') }}</h2>
+                    <div class="mt-8 grid gap-8 md:grid-cols-3">
+                        <div
+                            v-for="(p, i) in points"
+                            :key="i"
+                            class="md:border-l md:pl-5 md:first:border-l-0 md:first:pl-0"
+                            style="border-color: var(--line)"
+                        >
+                            <h3 class="text-lg font-semibold">{{ p.title }}</h3>
+                            <p class="cin-muted mt-1">{{ p.text }}</p>
+                        </div>
                     </div>
                 </div>
             </div>

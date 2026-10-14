@@ -93,4 +93,12 @@ export default {
     'sms.send': 'SMS යවන්න',
     'sms.examples': 'උදාහරණ (ඔබා පුරවන්න):',
     'nav.myBatches': 'මගේ තොග',
+
+    // si.js
+    'flag.WEIGHT_HIGH': 'ඉතා බර තොගයක්',
+    'flag.DRYING_SHORT': 'වේලීම ඉතා කෙටියි',
+    'flag.DRYING_LONG': 'වේලීම ඉතා දිගයි',
+    'flag.LATE_LOG': 'ප්‍රමාදව සටහන් කළා',
+    'flag.DUPLICATE': 'අනුපිටපතක් විය හැක',
+    'flag.WEIGHT_JUMP': 'සාමාන්‍යයට වඩා බර ඉහළයි',
 };
