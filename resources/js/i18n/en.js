@@ -119,4 +119,21 @@ export default {
     'verify.back': 'Check another batch',
     'verify.passport': 'Passport',
     'verify.disclaimer': 'Prototype with synthetic data. Not a certificate.',
+
+    // en.js
+    'handover.column': 'Handover',
+    'handover.choose': 'Collector…',
+    'handover.send': 'Hand over',
+    'handover.pending': 'Waiting for',
+    'handover.done': 'Handed over to',
+    'collector.title': 'Collector desk',
+    'collector.pendingTitle': 'Incoming handovers',
+    'collector.receivedTitle': 'Received batches',
+    'collector.confirm': 'Confirm receipt',
+    'collector.grower': 'Grower',
+    'collector.noPending': 'No pending handovers.',
+    'collector.noReceived': 'Nothing received yet.',
+    'collector.receivedOn': 'Received',
+    'collector.sms': 'Open SMS simulator',
+    'verify.custody': 'Handed over to collector',
 };

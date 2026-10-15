@@ -119,4 +119,21 @@ export default {
     'verify.back': 'වෙනත් තොගයක් පරීක්ෂා කරන්න',
     'verify.passport': 'පාස්පෝර්ටය',
     'verify.disclaimer': 'මෙය කෘත්‍රිම දත්ත සහිත මූලාකෘතියකි. සහතිකයක් නොවේ.',
+
+    // si.js
+    'handover.column': 'භාර දීම',
+    'handover.choose': 'එකතුකරන්නා…',
+    'handover.send': 'භාර දෙන්න',
+    'handover.pending': 'බලාපොරොත්තුවෙන්',
+    'handover.done': 'භාර දුන්නේ',
+    'collector.title': 'එකතුකරන්නාගේ මේසය',
+    'collector.pendingTitle': 'පැමිණෙන භාර දීම්',
+    'collector.receivedTitle': 'ලැබුණු තොග',
+    'collector.confirm': 'ලැබුණු බව තහවුරු කරන්න',
+    'collector.grower': 'ගොවියා',
+    'collector.noPending': 'අපේක්ෂිත භාර දීම් නැහැ.',
+    'collector.noReceived': 'තවම කිසිවක් ලැබී නැහැ.',
+    'collector.receivedOn': 'ලැබුණු දිනය',
+    'collector.sms': 'SMS අනුකරණය විවෘත කරන්න',
+    'verify.custody': 'එකතුකරන්නාට භාර දුන් දිනය',
 };

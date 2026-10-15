@@ -30,15 +30,23 @@ const statusText = computed(() => {
     return label === key ? props.batch.status : label;
 });
 
-const rows = computed(() => [
-    [t('batch.col.plot'), props.batch.plot],
-    [t('batch.col.kg'), `${Number(props.batch.weight_kg)} kg`],
-    [t('batch.col.harvest'), props.batch.harvest_date],
-    [t('batch.col.drying'), `${props.batch.drying_days} ${t('batch.days')}`],
-    [t('batch.col.grade'), props.batch.grade ?? '-'],
-    [t('batch.col.status'), statusText.value],
-    [t('verify.source'), t('verify.source.' + props.batch.source)],
-]);
+const rows = computed(() => {
+    const list = [
+        [t('batch.col.plot'), props.batch.plot],
+        [t('batch.col.kg'), `${Number(props.batch.weight_kg)} kg`],
+        [t('batch.col.harvest'), props.batch.harvest_date],
+        [t('batch.col.drying'), `${props.batch.drying_days} ${t('batch.days')}`],
+        [t('batch.col.grade'), props.batch.grade ?? '-'],
+        [t('batch.col.status'), statusText.value],
+        [t('verify.source'), t('verify.source.' + props.batch.source)],
+    ];
+
+    if (props.batch.handed_over_at) {
+        list.push([t('verify.custody'), props.batch.handed_over_at]);
+    }
+
+    return list;
+});
 
 const printPage = () => window.print();
 </script>

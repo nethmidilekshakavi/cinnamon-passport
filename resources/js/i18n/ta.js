@@ -119,4 +119,21 @@ export default {
     'verify.back': 'மற்றொரு தொகுதியைச் சரிபார்',
     'verify.passport': 'கடவுச்சீட்டு',
     'verify.disclaimer': 'இது செயற்கைத் தரவுடன் கூடிய முன்மாதிரி. சான்றிதழ் அல்ல.',
+
+    // ta.js
+    'handover.column': 'ஒப்படைப்பு',
+    'handover.choose': 'சேகரிப்பாளர்…',
+    'handover.send': 'ஒப்படை',
+    'handover.pending': 'காத்திருப்பு',
+    'handover.done': 'ஒப்படைத்தது',
+    'collector.title': 'சேகரிப்பாளர் மேசை',
+    'collector.pendingTitle': 'வரும் ஒப்படைப்புகள்',
+    'collector.receivedTitle': 'பெறப்பட்ட தொகுதிகள்',
+    'collector.confirm': 'பெற்றதை உறுதிசெய்',
+    'collector.grower': 'விவசாயி',
+    'collector.noPending': 'நிலுவையில் ஒப்படைப்புகள் இல்லை.',
+    'collector.noReceived': 'இதுவரை எதுவும் பெறப்படவில்லை.',
+    'collector.receivedOn': 'பெற்ற தேதி',
+    'collector.sms': 'SMS உருவகத்தைத் திற',
+    'verify.custody': 'சேகரிப்பாளரிடம் ஒப்படைத்த தேதி',
 };

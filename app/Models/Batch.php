@@ -37,6 +37,8 @@ class Batch extends Model
             'harvest_date' => 'date',
             'weight_kg' => 'decimal:2',
             'flags' => 'array',
+            'handover_requested_at' => 'datetime',
+            'handed_over_at' => 'datetime',
         ];
     }
 
@@ -51,5 +53,10 @@ class Batch extends Model
     public function grower(): BelongsTo
     {
         return $this->belongsTo(User::class, 'grower_id');
+    }
+
+    public function collector(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'collector_id');
     }
 }

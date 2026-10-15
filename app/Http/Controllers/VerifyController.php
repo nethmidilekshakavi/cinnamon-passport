@@ -44,6 +44,7 @@ class VerifyController extends Controller
                 'status' => $batch->status,
                 'source' => $batch->source,
                 'flags' => $batch->flags ?? [],
+                'handed_over_at' => $batch->handed_over_at?->toDateString(),
             ],
         ]);
     }

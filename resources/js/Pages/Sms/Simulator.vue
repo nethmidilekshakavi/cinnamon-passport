@@ -3,16 +3,18 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { useI18n } from '@/i18n';
 
-defineProps({ result: Object });
+defineProps({ result: Object, role: String });
 
 const { t } = useI18n();
 const form = useForm({ message: '' });
 
-const examples = [
+const growerExamples = [
     'BATCH P1 40KG 12OCT DRY3 ALBA',
     'තොගය P2 30KG 11OCT DRY2 C5',
     'தொகுதி P3 25KG 10OCT DRY4',
+    'HAND CIN-0001 0771234567',
 ];
+const collectorExamples = ['OK CIN-0001', 'තහවුරු CIN-0001', 'உறுதி CIN-0001'];
 
 const send = () => {
     form.post(route('sms.store'), {
@@ -74,7 +76,7 @@ const send = () => {
                     <p class="cin-muted mb-2 text-xs">{{ t('sms.examples') }}</p>
                     <div class="flex flex-wrap gap-2">
                         <button
-                            v-for="e in examples"
+                            v-for="e in role === 'collector' ? collectorExamples : growerExamples"
                             :key="e"
                             type="button"
                             class="rounded-full border border-[#E4D6C8] bg-white px-3 py-1 text-xs hover:bg-[#FAF6F2]"
@@ -85,8 +87,11 @@ const send = () => {
                     </div>
                 </div>
 
-                <Link :href="route('batches.index')" class="cin-muted mt-6 inline-block text-sm underline">
-                    {{ t('nav.myBatches') }}
+                <Link
+                    :href="role === 'collector' ? route('collector.home') : route('batches.index')"
+                    class="cin-muted mt-6 inline-block text-sm underline"
+                >
+                    {{ role === 'collector' ? t('collector.title') : t('nav.myBatches') }}
                 </Link>
             </div>
         </div>

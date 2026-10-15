@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BatchController;
+use App\Http\Controllers\CollectorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\VerifyController;
@@ -33,24 +34,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
-// Grower area: batches (app form) and the SMS simulator.
-Route::middleware(['auth', 'role:grower'])->group(function () {
-    Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
-    Route::get('/batches/create', [BatchController::class, 'create'])->name('batches.create');
-    Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
-
+    // SMS simulator: growers and collectors (role is checked in the controller).
     Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
     Route::post('/sms', [SmsController::class, 'store'])->name('sms.store');
 });
 
-Route::middleware(['auth', 'role:collector'])->get('/collector', function () {
-    return Inertia::render('ComingSoon', [
-        'titleKey' => 'nav.collectorArea',
-        'messageKey' => 'soon.collector',
-    ]);
-})->name('collector.home');
+// Grower area.
+Route::middleware(['auth', 'role:grower'])->group(function () {
+    Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
+    Route::get('/batches/create', [BatchController::class, 'create'])->name('batches.create');
+    Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
+    Route::post('/batches/{batch}/handover', [BatchController::class, 'handover'])->name('batches.handover');
+});
+
+// Collector area.
+Route::middleware(['auth', 'role:collector'])->group(function () {
+    Route::get('/collector', [CollectorController::class, 'index'])->name('collector.home');
+    Route::post('/collector/handovers/{batch}/confirm', [CollectorController::class, 'confirm'])->name('collector.confirm');
+});
 
 // Buyer home is the verification page.
 Route::middleware(['auth', 'role:buyer'])

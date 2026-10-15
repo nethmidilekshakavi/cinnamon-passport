@@ -37,12 +37,11 @@ it('replies in Sinhala when the command is Sinhala', function () {
         ->assertSessionHas('sms.reply', fn ($reply) => str_contains($reply, 'සුරැකිණි'));
 });
 
-it('blocks non-growers from the simulator', function () {
-    $collector = User::factory()->create(['role' => User::ROLE_COLLECTOR]);
+it('blocks buyers from the simulator', function () {
+    $buyer = User::factory()->create(['role' => User::ROLE_BUYER]);
 
-    $this->actingAs($collector)->get('/sms')->assertForbidden();
+    $this->actingAs($buyer)->get('/sms')->assertForbidden();
 });
-
 
 it('flags an abnormal SMS batch and keeps a normal one recorded', function () {
     $user = User::factory()->create(['role' => User::ROLE_GROWER]);
