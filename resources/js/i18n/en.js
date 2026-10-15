@@ -101,4 +101,22 @@ export default {
     'flag.LATE_LOG': 'Logged late',
     'flag.DUPLICATE': 'Possible duplicate',
     'flag.WEIGHT_JUMP': 'Weight jump vs usual',
+
+    // en.js
+    'verify.title': 'Verify a batch',
+    'verify.hint': 'Enter the batch code from the label, or scan its QR code.',
+    'verify.placeholder': 'CIN-0001',
+    'verify.check': 'Check',
+    'verify.notFound': 'No batch found with that code.',
+    'verify.passportTitle': 'Batch Quality Passport',
+    'verify.clean': 'No anomaly flags. All checks passed.',
+    'verify.review': 'Flagged for review',
+    'verify.source': 'Logged via',
+    'verify.source.app': 'App',
+    'verify.source.sms': 'SMS',
+    'verify.scan': 'Scan to open this passport',
+    'verify.print': 'Print passport',
+    'verify.back': 'Check another batch',
+    'verify.passport': 'Passport',
+    'verify.disclaimer': 'Prototype with synthetic data. Not a certificate.',
 };

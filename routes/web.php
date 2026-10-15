@@ -3,6 +3,7 @@
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SmsController;
+use App\Http\Controllers\VerifyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -13,6 +14,11 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
     ]);
 });
+
+// Public batch verification (QR codes point here). No login needed.
+Route::get('/verify', [VerifyController::class, 'index'])->name('verify.index');
+Route::post('/verify', [VerifyController::class, 'lookup'])->name('verify.lookup');
+Route::get('/verify/{code}', [VerifyController::class, 'show'])->name('verify.show');
 
 // After login, each role goes to its own home page.
 Route::get('/dashboard', function (Request $request) {
@@ -46,11 +52,9 @@ Route::middleware(['auth', 'role:collector'])->get('/collector', function () {
     ]);
 })->name('collector.home');
 
-Route::middleware(['auth', 'role:buyer'])->get('/buyer', function () {
-    return Inertia::render('ComingSoon', [
-        'titleKey' => 'nav.buyerArea',
-        'messageKey' => 'soon.buyer',
-    ]);
-})->name('buyer.home');
+// Buyer home is the verification page.
+Route::middleware(['auth', 'role:buyer'])
+    ->get('/buyer', [VerifyController::class, 'index'])
+    ->name('buyer.home');
 
 require __DIR__.'/auth.php';

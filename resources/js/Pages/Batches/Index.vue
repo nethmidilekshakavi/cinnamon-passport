@@ -40,6 +40,7 @@ const statusLabel = (status) => {
                             <th class="px-4 py-2">{{ t('batch.col.drying') }}</th>
                             <th class="px-4 py-2">{{ t('batch.col.grade') }}</th>
                             <th class="px-4 py-2">{{ t('batch.col.status') }}</th>
+                            <th class="px-4 py-2"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -53,18 +54,23 @@ const statusLabel = (status) => {
                             <td class="px-4 py-2">
                                 {{ statusLabel(b.status) }}
                                 <div v-if="b.flags && b.flags.length" class="mt-1 flex flex-wrap gap-1">
-        <span
-            v-for="f in b.flags"
-            :key="f"
-            class="rounded bg-red-50 px-2 py-0.5 text-xs text-red-700"
-        >
-            {{ t('flag.' + f) }}
-        </span>
+                                        <span
+                                            v-for="f in b.flags"
+                                            :key="f"
+                                            class="rounded bg-red-50 px-2 py-0.5 text-xs text-red-700"
+                                        >
+                                            {{ t('flag.' + f) }}
+                                        </span>
                                 </div>
+                            </td>
+                            <td class="px-4 py-2">
+                                <Link :href="route('verify.show', b.code)" class="text-sm underline">
+                                    {{ t('verify.passport') }}
+                                </Link>
                             </td>
                         </tr>
                         <tr v-if="batches.length === 0">
-                            <td colspan="7" class="px-4 py-6 text-center text-gray-500">{{ t('batch.empty') }}</td>
+                            <td colspan="8" class="px-4 py-6 text-center text-gray-500">{{ t('batch.empty') }}</td>
                         </tr>
                         </tbody>
                     </table>

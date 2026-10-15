@@ -101,4 +101,22 @@ export default {
     'flag.LATE_LOG': 'ප්‍රමාදව සටහන් කළා',
     'flag.DUPLICATE': 'අනුපිටපතක් විය හැක',
     'flag.WEIGHT_JUMP': 'සාමාන්‍යයට වඩා බර ඉහළයි',
+
+    // si.js
+    'verify.title': 'තොගයක් සත්‍යාපනය කරන්න',
+    'verify.hint': 'ලේබලයේ ඇති තොග කේතය ඇතුළත් කරන්න, නැතහොත් QR කේතය ස්කෑන් කරන්න.',
+    'verify.placeholder': 'CIN-0001',
+    'verify.check': 'පරීක්ෂා කරන්න',
+    'verify.notFound': 'එම කේතයට අදාළ තොගයක් හමු වුණේ නැහැ.',
+    'verify.passportTitle': 'තොග ගුණාත්මක පාස්පෝර්ටය',
+    'verify.clean': 'අසාමාන්‍යතා සලකුණු නැහැ. සියලු පරීක්ෂා සමත්.',
+    'verify.review': 'සමාලෝචනයට සලකුණු කර ඇත',
+    'verify.source': 'සටහන් කළ ක්‍රමය',
+    'verify.source.app': 'යෙදුම',
+    'verify.source.sms': 'SMS',
+    'verify.scan': 'මේ පාස්පෝර්ටය විවෘත කිරීමට ස්කෑන් කරන්න',
+    'verify.print': 'පාස්පෝර්ටය මුද්‍රණය කරන්න',
+    'verify.back': 'වෙනත් තොගයක් පරීක්ෂා කරන්න',
+    'verify.passport': 'පාස්පෝර්ටය',
+    'verify.disclaimer': 'මෙය කෘත්‍රිම දත්ත සහිත මූලාකෘතියකි. සහතිකයක් නොවේ.',
 };
