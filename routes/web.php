@@ -8,6 +8,7 @@ use App\Http\Controllers\VerifyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\StudyController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -58,5 +59,17 @@ Route::middleware(['auth', 'role:collector'])->group(function () {
 Route::middleware(['auth', 'role:buyer'])
     ->get('/buyer', [VerifyController::class, 'index'])
     ->name('buyer.home');
+
+
+// Usability study (RQ1)
+Route::get('/study', [StudyController::class, 'index'])->name('study.index');
+Route::post('/study/trials', [StudyController::class, 'store'])->name('study.store');
+Route::get('/study/trials/{trial}', [StudyController::class, 'show'])->name('study.show');
+Route::post('/study/trials/{trial}/start', [StudyController::class, 'start'])->name('study.start');
+Route::post('/study/trials/{trial}/giveup', [StudyController::class, 'giveUp'])->name('study.giveup');
+Route::get('/study/sus', [StudyController::class, 'susForm'])->name('study.sus');
+Route::post('/study/sus', [StudyController::class, 'susStore'])->name('study.sus.store');
+Route::get('/study/results', [StudyController::class, 'results'])->name('study.results');
+Route::get('/study/export', [StudyController::class, 'export'])->name('study.export');
 
 require __DIR__.'/auth.php';

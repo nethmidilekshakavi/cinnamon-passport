@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Services\StudyRecorder;
 
 class SmsController extends Controller
 {
@@ -66,6 +67,7 @@ class SmsController extends Controller
     }
 
     /** BATCH P1 40KG 12OCT DRY3 ALBA  (growers only) */
+    /** BATCH P1 40KG 12OCT DRY3 ALBA  (growers only) */
     private function handleBatch(User $user, string $text, string $lang, SmsParser $parser, AnomalyDetector $detector): array
     {
         if ($user->role !== User::ROLE_GROWER) {
@@ -75,6 +77,8 @@ class SmsController extends Controller
         $parsed = $parser->parse($text);
 
         if (! $parsed['ok']) {
+            app(StudyRecorder::class)->failedAttempt($user, 'sms');
+
             return [false, SmsReplies::failure($lang, $parsed['errors']), null];
         }
 
@@ -86,6 +90,7 @@ class SmsController extends Controller
 
         // Flag unusual batches (heavy, too little drying, duplicate, ...).
         $detector->flag($batch);
+        app(StudyRecorder::class)->succeeded($user, 'sms', $batch);
 
         return [true, SmsReplies::success($lang, $batch), $batch->code];
     }

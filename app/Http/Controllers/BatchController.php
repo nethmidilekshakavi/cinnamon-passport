@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Services\StudyRecorder;
 
 class BatchController extends Controller
 {
@@ -36,7 +37,7 @@ class BatchController extends Controller
         return Inertia::render('Batches/Create', ['grades' => Batch::GRADES]);
     }
 
-    public function store(StoreBatchRequest $request, AnomalyDetector $detector): RedirectResponse
+    public function store(StoreBatchRequest $request, AnomalyDetector $detector, StudyRecorder $study): RedirectResponse
     {
         $batch = $request->user()->batches()->create(
             $request->validated() + [
@@ -46,6 +47,7 @@ class BatchController extends Controller
         );
 
         $detector->flag($batch);
+        $study->succeeded($request->user(), 'app', $batch);
 
         return redirect()->route('batches.index');
     }

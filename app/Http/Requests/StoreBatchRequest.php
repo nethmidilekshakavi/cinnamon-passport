@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use App\Models\Batch;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Services\StudyRecorder;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreBatchRequest extends FormRequest
 {
@@ -23,5 +25,12 @@ class StoreBatchRequest extends FormRequest
             'grade' => ['nullable', Rule::in(Batch::GRADES)],
             'notes' => ['nullable', 'string', 'max:500'],
         ];
+    }
+
+    protected function failedValidation(Validator $validator): void
+    {
+        app(StudyRecorder::class)->failedAttempt($this->user(), 'app');
+
+        parent::failedValidation($validator);
     }
 }
