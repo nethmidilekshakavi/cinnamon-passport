@@ -3,23 +3,32 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $people = [
+            ['Demo Grower', 'grower@example.com', 'grower', '0770000001'],
+            ['Demo Collector', 'collector@example.com', 'collector', '0770000002'],
+            ['Demo Buyer', 'buyer@example.com', 'buyer', '0770000003'],
+        ];
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach ($people as [$name, $email, $role, $phone]) {
+            if (User::where('email', $email)->exists()) {
+                continue;
+            }
+
+            User::forceCreate([
+                'name' => $name,
+                'email' => $email,
+                'password' => Hash::make('password'),
+                'role' => $role,
+                'phone' => $phone,
+                'email_verified_at' => now(),
+            ]);
+        }
     }
 }

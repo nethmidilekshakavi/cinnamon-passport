@@ -15,10 +15,23 @@ const page = usePage();
             </Link>
 
             <div class="flex items-center gap-4">
-                <Link v-if="page.props.auth?.user" :href="route('dashboard')" class="text-sm underline">
-                    {{ page.props.auth.user.name }}
-                </Link>
-                <LanguageSwitcher />
+                <template v-if="page.props.auth?.user">
+                    <Link :href="route('dashboard')" class="text-sm underline">
+                        {{ page.props.auth.user.name }}
+                    </Link>
+                    <Link
+                        :href="route('logout')"
+                        method="post"
+                        as="button"
+                        class="rounded-md border border-[#5A2D17] px-3 py-1 text-sm font-medium text-[#5A2D17] hover:bg-[#5A2D17] hover:text-white"
+                    >
+                        Log out
+                    </Link>
+                </template>
+
+                <div class="rounded-full bg-[#2E170C] px-2 py-1">
+                    <LanguageSwitcher />
+                </div>
             </div>
         </header>
 

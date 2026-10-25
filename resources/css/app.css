@@ -192,3 +192,8 @@ body.font-sans { font-family: 'Hanken Grotesk', 'Noto Sans Sinhala', 'Noto Sans 
 html[lang='si'] body, html[lang='ta'] body { line-height: 1.75; }
 html[lang='si'] .font-display, html[lang='ta'] .font-display { letter-spacing: 0; }
 html[lang='si'] .cin-h1, html[lang='ta'] .cin-h1 { line-height: 1.4; }
+
+.cin-card table td:nth-child(1),
+.cin-card table td:nth-child(4) {
+    white-space: nowrap;
+}
