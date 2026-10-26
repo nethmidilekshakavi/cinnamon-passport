@@ -75,7 +75,7 @@ class SmsParser
 
         if ($data['weight_kg'] === null) {
             $errors[] = ['code' => 'weight'];
-        } elseif ($data['weight_kg'] <= 0 || $data['weight_kg'] > 5000) {
+        } elseif ($data['weight_kg'] <= 0 || $data['weight_kg'] > 500) {
             $errors[] = ['code' => 'weight_range'];
         }
 
@@ -106,8 +106,13 @@ class SmsParser
 
         $date = CarbonImmutable::create($year, $month, $day)->startOfDay();
 
-        if ($date->greaterThan($today)) {
-            $year--;
+                if ($date->greaterThan($today)) {
+                    // A date a few days ahead is a typing mistake, not last year's harvest.
+                    if ($date->lessThanOrEqualTo($today->addDays(31))) {
+                        return null;
+                    }
+
+                    $year--;
             if (! checkdate($month, $day, $year)) {
                 return null;
             }
