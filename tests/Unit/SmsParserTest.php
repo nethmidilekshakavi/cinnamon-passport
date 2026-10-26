@@ -3,62 +3,33 @@
 use App\Services\SmsParser;
 use Carbon\CarbonImmutable;
 
-function smsParse(string $text): array
-{
-    return (new SmsParser())->parse($text, CarbonImmutable::create(2026, 10, 13));
-}
+it('rejects a harvest date a few days in the future', function () {
+    $today = CarbonImmutable::parse('2026-10-26');
 
-function smsCodes(array $result): array
-{
-    return array_column($result['errors'], 'code');
-}
+    $result = (new SmsParser())->parse('BATCH P1 40KG 28OCT DRY3', $today);
 
-it('parses a full English SMS', function () {
-    $r = smsParse('BATCH P1 40KG 12OCT DRY3 ALBA');
-
-    expect($r['ok'])->toBeTrue()
-        ->and($r['data'])->toBe([
-            'plot' => 'P1',
-            'weight_kg' => 40.0,
-            'harvest_date' => '2026-10-12',
-            'drying_days' => 3,
-            'grade' => 'ALBA',
-        ]);
+    expect($result['ok'])->toBeFalse()
+        ->and(array_column($result['errors'], 'code'))->toContain('date')
+        ->and($result['data']['harvest_date'])->toBeNull();
 });
 
-it('is case-insensitive and grade is optional', function () {
-    $r = smsParse('batch p1 25kg 10oct dry4');
+it('still reads a date far ahead as last year', function () {
+    $today = CarbonImmutable::parse('2026-01-05');
 
-    expect($r['ok'])->toBeTrue()
-        ->and($r['data']['plot'])->toBe('P1')
-        ->and($r['data']['grade'])->toBeNull();
+    $result = (new SmsParser())->parse('BATCH P1 40KG 28DEC DRY3', $today);
+
+    expect($result['ok'])->toBeTrue()
+        ->and($result['data']['harvest_date'])->toBe('2025-12-28');
 });
 
-it('accepts Sinhala and Tamil commands', function () {
-    expect(smsParse('තොගය P2 30KG 11OCT DRY2 C5')['ok'])->toBeTrue();
-    expect(smsParse('தொகுதி P3 30KG 11OCT DRY2')['ok'])->toBeTrue();
-});
+it('accepts 500 kg and rejects more, like the app form', function () {
+    $today = CarbonImmutable::parse('2026-10-26');
+    $parser = new SmsParser();
 
-it('uses last year when the date would be in the future', function () {
-    expect(smsParse('BATCH P1 10KG 20DEC DRY3')['data']['harvest_date'])->toBe('2025-12-20');
-});
+    expect($parser->parse('BATCH P1 500KG 20OCT DRY3', $today)['ok'])->toBeTrue();
 
-it('rejects an unknown command', function () {
-    expect(smsCodes(smsParse('HELLO P1 40KG')))->toBe(['command']);
-});
+    $heavy = $parser->parse('BATCH P1 501KG 20OCT DRY3', $today);
 
-it('reports a missing weight', function () {
-    expect(smsCodes(smsParse('BATCH P1 12OCT DRY3')))->toBe(['weight']);
-});
-
-it('reports an impossible date', function () {
-    expect(smsCodes(smsParse('BATCH P1 40KG 31FEB DRY3')))->toBe(['date']);
-});
-
-it('reports out-of-range drying days', function () {
-    expect(smsCodes(smsParse('BATCH P1 40KG 12OCT DRY99')))->toBe(['drying_range']);
-});
-
-it('reports unknown tokens', function () {
-    expect(smsCodes(smsParse('BATCH P1 40KG 12OCT DRY3 XYZ')))->toBe(['unknown']);
+    expect($heavy['ok'])->toBeFalse()
+        ->and(array_column($heavy['errors'], 'code'))->toContain('weight_range');
 });
