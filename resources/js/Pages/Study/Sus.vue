@@ -3,8 +3,10 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+import { useI18n } from '@/i18n';
 
 const props = defineProps({ items: Array, participant: String, channel: String });
+const { t } = useI18n();
 
 const form = useForm({
     participant: props.participant ?? '',
@@ -14,14 +16,21 @@ const form = useForm({
 
 const submit = () => form.post(route('study.sus.store'));
 const incomplete = () => !form.participant || form.answers.some((a) => a === null);
+
+// Translated item text; falls back to the server's English text if a key is missing.
+const itemText = (i) => {
+    const key = `sus.q${i + 1}`;
+    const translated = t(key);
+    return translated === key ? props.items[i] : translated;
+};
 </script>
 
 <template>
-    <Head title="SUS questionnaire" />
+    <Head :title="t('sus.title')" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-display text-xl font-bold">SUS questionnaire</h2>
+            <h2 class="font-display text-xl font-bold">{{ t('sus.title') }}</h2>
         </template>
 
         <div class="py-12">
@@ -29,7 +38,7 @@ const incomplete = () => !form.participant || form.answers.some((a) => a === nul
                 <form @submit.prevent="submit" class="cin-card space-y-6 p-6">
                     <div class="flex flex-wrap items-end gap-6">
                         <div>
-                            <label class="block text-sm font-medium">Participant</label>
+                            <label class="block text-sm font-medium">{{ t('sus.participant') }}</label>
                             <input
                                 v-model="form.participant"
                                 type="text"
@@ -39,18 +48,18 @@ const incomplete = () => !form.participant || form.answers.some((a) => a === nul
                         </div>
                         <div class="flex gap-4 pb-2 text-sm">
                             <label class="flex items-center gap-2">
-                                <input v-model="form.channel" type="radio" value="sms" /> SMS
+                                <input v-model="form.channel" type="radio" value="sms" /> {{ t('sus.channelSms') }}
                             </label>
                             <label class="flex items-center gap-2">
-                                <input v-model="form.channel" type="radio" value="app" /> App form
+                                <input v-model="form.channel" type="radio" value="app" /> {{ t('sus.channelApp') }}
                             </label>
                         </div>
                     </div>
 
-                    <p class="cin-muted text-xs">1 = strongly disagree … 5 = strongly agree</p>
+                    <p class="cin-muted text-xs">{{ t('sus.scale') }}</p>
 
                     <div v-for="(item, i) in items" :key="i" class="border-t pt-4">
-                        <p class="mb-2 text-sm">{{ i + 1 }}. {{ item }}</p>
+                        <p class="mb-2 text-sm">{{ i + 1 }}. {{ itemText(i) }}</p>
                         <div class="flex gap-5 text-sm">
                             <label v-for="n in 5" :key="n" class="flex items-center gap-1">
                                 <input v-model="form.answers[i]" type="radio" :name="`q${i}`" :value="n" /> {{ n }}
@@ -60,7 +69,7 @@ const incomplete = () => !form.participant || form.answers.some((a) => a === nul
 
                     <InputError :message="form.errors.participant || form.errors.answers" />
 
-                    <PrimaryButton :disabled="form.processing || incomplete()">Save SUS</PrimaryButton>
+                    <PrimaryButton :disabled="form.processing || incomplete()">{{ t('sus.save') }}</PrimaryButton>
                 </form>
             </div>
         </div>

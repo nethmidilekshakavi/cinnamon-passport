@@ -24,7 +24,7 @@ const links = computed(() => {
     return [
         { label: t('nav.myBatches'), href: route('batches.index'), active: route().current('batches.index') },
         { label: t('nav.newBatch'), href: route('batches.create'), active: route().current('batches.create') },
-        { label: 'Study', href: route('study.index'), active: route().current('study.*') },
+        { label: t('nav.study'), href: route('study.index'), active: route().current('study.*') },
     ];
 });
 </script>
@@ -88,33 +88,33 @@ const links = computed(() => {
         </nav>
 
         <!-- Usability study: shown on every page while a timed trial is running -->
-        <div v-if="study" class="border-b border-amber-300 bg-amber-50">
-            <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
-                <div class="text-sm">
-                    <p class="font-semibold text-amber-900">
-                        Study task · {{ study.participant }} ·
-                        use {{ study.channel === 'sms' ? 'the SMS simulator' : 'the app form' }}
-                    </p>
-                    <p>{{ study.text[locale] ?? study.text.en }}</p>
+                <div v-if="study" class="border-b border-amber-300 bg-amber-50">
+                    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
+                        <div class="text-sm">
+                            <p class="font-semibold text-amber-900">
+                                {{ t('study.banner.title') }} · {{ study.participant }} ·
+                                {{ study.channel === 'sms' ? t('study.banner.useSms') : t('study.banner.useApp') }}
+                            </p>
+                            <p>{{ study.text[locale] ?? study.text.en }}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <Link
+                                :href="study.channel === 'sms' ? route('sms.index') : route('batches.create')"
+                                class="cin-btn !px-3 !py-1 text-xs"
+                            >
+                                {{ study.channel === 'sms' ? t('study.banner.goSms') : t('study.banner.goApp') }}
+                            </Link>
+                            <Link
+                                :href="route('study.giveup', study.id)"
+                                method="post"
+                                as="button"
+                                class="rounded border border-amber-400 px-3 py-1 text-xs"
+                            >
+                                {{ t('study.banner.giveUp') }}
+                            </Link>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex gap-2">
-                    <Link
-                        :href="study.channel === 'sms' ? route('sms.index') : route('batches.create')"
-                        class="cin-btn !px-3 !py-1 text-xs"
-                    >
-                        Go to {{ study.channel === 'sms' ? 'SMS simulator' : 'new batch form' }}
-                    </Link>
-                    <Link
-                        :href="route('study.giveup', study.id)"
-                        method="post"
-                        as="button"
-                        class="rounded border border-amber-400 px-3 py-1 text-xs"
-                    >
-                        Give up
-                    </Link>
-                </div>
-            </div>
-        </div>
 
         <header v-if="$slots.header" class="cin-pagehead">
             <div class="mx-auto max-w-6xl px-4 py-5 sm:px-6">
