@@ -17,7 +17,7 @@ Check beforehand that the heavy-weight and short-drying messages below really ra
 | Time | Do | Say |
 | --- | --- | --- |
 | 0:00 | Show the welcome page. Switch language to Sinhala, then back. | "A grower can use this on any phone, in Sinhala, Tamil or English." |
-| 0:30 | Grower: open the SMS simulator. Send `BATCH P1 40KG 12OCT DRY3 ALBA`. | "One text message. The system replies with a batch code." |
+| 0:30 | Grower: open the SMS simulator (/sms). Send `BATCH P1 40KG 12OCT DRY3 ALBA`. | "One text message. The system replies with a batch code." |
 | 1:00 | Send the Sinhala version: `තොගය P2 35KG 10OCT DRY4 C5`. Open My batches. | "Same server code for every language. The batch is listed." |
 | 1:30 | Send `BATCH P1 450KG 12OCT DRY1`. Show the flags on My batches. | "Six simple rules flag odd values. A flag means check, not reject." |
 | 2:00 | Send `BATCH P1 40KG`. Show the error reply. | "A bad message gets a clear reply saying what is missing." |

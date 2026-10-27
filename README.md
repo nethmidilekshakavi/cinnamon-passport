@@ -39,7 +39,7 @@ Open http://localhost:8000.
 | Collector | collector@example.com | 0770000002 |
 | Buyer | buyer@example.com | 0770000003 |
 
-## SMS formats (use the SMS simulator page when logged in as a grower or collector)
+## SMS formats (use the SMS simulator at `/sms` when logged in as a grower or collector)
 
 | Action | Who | Message |
 | --- | --- | --- |
