@@ -1,58 +1,82 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SMS-First Batch Quality Passport for Ceylon Cinnamon Smallholders
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Final year project, Canterbury Christ Church University (Saegis Campus), 2026.
+T.K.N.D. Kavindi (100197717). Supervisor: Ms. Ashani Gallage.
 
-## About Laravel
+A prototype that lets a cinnamon grower record a harvest batch with a plain text message (no smartphone or data plan), checks it with simple quality rules, hands it over to a collector, and gives a buyer a public passport page with a QR code.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**All data is synthetic. SMS is simulated: there is no live SMS gateway.**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Research questions
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **RQ1** Is SMS-first entry as reliable as an app form? Tested with a scripted scenario test (4 tasks x 16 typical mistakes x 2 channels = 116 runs). A usability study mode (timed tasks, SUS) is also built in.
+- **RQ2** How precisely and completely can simple rules flag suspicious batches? Tested on synthetic batches with injected anomalies and noise.
 
-## Learning Laravel
+## Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Laravel 13, Vue 3 + Inertia, Tailwind CSS, SQLite, Pest. Screens and SMS replies are in English, Sinhala and Tamil.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Setup
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite        # Windows PowerShell: New-Item database/database.sqlite
+php artisan migrate:fresh --seed
+npm run build
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Open http://localhost:8000.
 
-## Contributing
+### Demo accounts (password: `password`)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| Role | Email | Phone |
+| --- | --- | --- |
+| Grower | grower@example.com | 0770000001 |
+| Collector | collector@example.com | 0770000002 |
+| Buyer | buyer@example.com | 0770000003 |
 
-## Code of Conduct
+## SMS formats (use the SMS simulator page when logged in as a grower or collector)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Action | Who | Message |
+| --- | --- | --- |
+| Record a batch | Grower | `BATCH P1 40KG 12OCT DRY3 ALBA` |
+| Request handover | Grower | `HAND CIN-0001 0770000002` (collector's phone) |
+| Confirm receipt | Collector | `OK CIN-0001` |
 
-## Security Vulnerabilities
+A batch message is: command, plot, weight (`KG`), harvest date (`12OCT`), drying days (`DRY3`) and an optional grade (`ALBA`, `C5`, `C4`, `H1`). Order after the plot does not matter, and the year is not typed. Sinhala and Tamil commands work too (`තොගය`, `භාර`, `තහවුරු`, `தொகுதி`, `ஒப்படை`, `உறுதி`).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Quality rules (six)
 
-## License
+`WEIGHT_HIGH`, `DRYING_SHORT`, `DRYING_LONG`, `LATE_LOG`, `DUPLICATE`, `WEIGHT_JUMP`. A flag means "check this batch", not "reject it".
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Public passport
+
+Every batch has a code such as `CIN-0001` and a public page at `/verify/CIN-0001`. It shows batch facts only, never the grower's name or notes.
+
+## Experiments
+
+```bash
+# RQ2: precision and recall on 300 synthetic batches (add --save to store them in the database)
+php artisan cinnamon:simulate --growers=30 --batches=10 --anomaly-rate=0.15 --noise-rate=0.05 --seed=42
+
+# RQ1: scripted scenario test, writes storage/app/rq1/scenario-results.csv
+php artisan cinnamon:scenario-test
+```
+
+Usability study mode (timed tasks, SUS, CSV export) is at `/study` for growers.
+
+## Tests
+
+```bash
+php artisan test
+```
+
+## Limits
+
+Synthetic data only, thresholds are assumed rather than learned from real growers, SMS is simulated, and recall in RQ2 is partly circular because anomalies are generated to cross the same thresholds the rules use.
+
+Next steps: a live SMS gateway, thresholds from real data, and a pilot with growers.
