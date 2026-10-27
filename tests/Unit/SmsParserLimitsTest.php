@@ -33,3 +33,13 @@ it('accepts 500 kg and rejects more, like the app form', function () {
     expect($heavy['ok'])->toBeFalse()
         ->and(array_column($heavy['errors'], 'code'))->toContain('weight_range');
 });
+
+
+it('accepts DRY with a space before the number', function () {
+    $today = CarbonImmutable::parse('2026-10-26');
+
+    $result = (new SmsParser())->parse('BATCH P1 40KG 12OCT DRY 3 ALBA', $today);
+
+    expect($result['ok'])->toBeTrue()
+        ->and($result['data']['drying_days'])->toBe(3);
+});

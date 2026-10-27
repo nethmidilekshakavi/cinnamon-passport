@@ -49,6 +49,7 @@ class SmsParser
             $data['plot'] = strtoupper($plot);
         }
 
+        $tokens = $this->joinSplitDrying($tokens);
         $dateFailed = false;
 
         foreach ($tokens as $token) {
@@ -91,6 +92,25 @@ class SmsParser
 
         return ['ok' => count($errors) === 0, 'data' => $data, 'errors' => $errors];
     }
+
+        /** "DRY 4" typed with a space counts as "DRY4". */
+        private function joinSplitDrying(array $tokens): array
+        {
+            $out = [];
+
+            for ($i = 0; $i < count($tokens); $i++) {
+                if (strtoupper($tokens[$i]) === 'DRY' && isset($tokens[$i + 1]) && preg_match('/^\d{1,2}$/', $tokens[$i + 1])) {
+                    $out[] = 'DRY'.$tokens[$i + 1];
+                    $i++;
+
+                    continue;
+                }
+
+                $out[] = $tokens[$i];
+            }
+
+            return $out;
+        }
 
     /**
      * Year is not typed in an SMS: use this year, or last year if that
