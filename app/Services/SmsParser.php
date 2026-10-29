@@ -50,6 +50,7 @@ class SmsParser
         }
 
         $tokens = $this->joinSplitDrying($tokens);
+
         $dateFailed = false;
 
         foreach ($tokens as $token) {
@@ -76,7 +77,7 @@ class SmsParser
 
         if ($data['weight_kg'] === null) {
             $errors[] = ['code' => 'weight'];
-        } elseif ($data['weight_kg'] <= 0 || $data['weight_kg'] > 500) {
+        } elseif ($data['weight_kg'] < 0.1 || $data['weight_kg'] > 500) {
             $errors[] = ['code' => 'weight_range'];
         }
 
@@ -86,35 +87,35 @@ class SmsParser
 
         if ($data['drying_days'] === null) {
             $errors[] = ['code' => 'drying'];
-        } elseif ($data['drying_days'] > 30) {
+        } elseif ($data['drying_days'] < 1 || $data['drying_days'] > 30) {
             $errors[] = ['code' => 'drying_range'];
         }
 
         return ['ok' => count($errors) === 0, 'data' => $data, 'errors' => $errors];
     }
 
-        /** "DRY 4" typed with a space counts as "DRY4". */
-        private function joinSplitDrying(array $tokens): array
-        {
-            $out = [];
+    /** "DRY 4" typed with a space counts as "DRY4". */
+    private function joinSplitDrying(array $tokens): array
+    {
+        $out = [];
 
-            for ($i = 0; $i < count($tokens); $i++) {
-                if (strtoupper($tokens[$i]) === 'DRY' && isset($tokens[$i + 1]) && preg_match('/^\d{1,2}$/', $tokens[$i + 1])) {
-                    $out[] = 'DRY'.$tokens[$i + 1];
-                    $i++;
+        for ($i = 0; $i < count($tokens); $i++) {
+            if (strtoupper($tokens[$i]) === 'DRY' && isset($tokens[$i + 1]) && preg_match('/^\d{1,2}$/', $tokens[$i + 1])) {
+                $out[] = 'DRY'.$tokens[$i + 1];
+                $i++;
 
-                    continue;
-                }
-
-                $out[] = $tokens[$i];
+                continue;
             }
 
-            return $out;
+            $out[] = $tokens[$i];
         }
 
+        return $out;
+    }
+
     /**
-     * Year is not typed in an SMS: use this year, or last year if that
-     * would put the harvest in the future.
+     * Year is not typed in an SMS: use this year. A date a few days ahead is a
+     * typing mistake, so it is rejected; a date further ahead is last year's.
      */
     private function resolveDate(int $day, int $month, CarbonImmutable $today): ?CarbonImmutable
     {
@@ -126,13 +127,13 @@ class SmsParser
 
         $date = CarbonImmutable::create($year, $month, $day)->startOfDay();
 
-                if ($date->greaterThan($today)) {
-                    // A date a few days ahead is a typing mistake, not last year's harvest.
-                    if ($date->lessThanOrEqualTo($today->addDays(31))) {
-                        return null;
-                    }
+        if ($date->greaterThan($today)) {
+            // A date a few days ahead is a typing mistake, not last year's harvest.
+            if ($date->lessThanOrEqualTo($today->addDays(31))) {
+                return null;
+            }
 
-                    $year--;
+            $year--;
             if (! checkdate($month, $day, $year)) {
                 return null;
             }
@@ -141,5 +142,4 @@ class SmsParser
 
         return $date;
     }
-
 }

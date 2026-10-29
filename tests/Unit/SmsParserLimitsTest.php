@@ -34,7 +34,6 @@ it('accepts 500 kg and rejects more, like the app form', function () {
         ->and(array_column($heavy['errors'], 'code'))->toContain('weight_range');
 });
 
-
 it('accepts DRY with a space before the number', function () {
     $today = CarbonImmutable::parse('2026-10-26');
 
@@ -42,4 +41,15 @@ it('accepts DRY with a space before the number', function () {
 
     expect($result['ok'])->toBeTrue()
         ->and($result['data']['drying_days'])->toBe(3);
+});
+
+it('uses the same weight and drying limits as the app form', function () {
+    $today = CarbonImmutable::parse('2026-10-26');
+    $parser = new SmsParser();
+
+    $light = $parser->parse('BATCH P1 0.05KG 20OCT DRY3', $today);
+    $zero = $parser->parse('BATCH P1 40KG 20OCT DRY0', $today);
+
+    expect(array_column($light['errors'], 'code'))->toContain('weight_range')
+        ->and(array_column($zero['errors'], 'code'))->toContain('drying_range');
 });

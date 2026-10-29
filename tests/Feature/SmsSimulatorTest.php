@@ -34,7 +34,7 @@ it('replies in Sinhala when the command is Sinhala', function () {
 
     $this->actingAs($user)
         ->post('/sms', ['message' => 'තොගය P2 30KG 11OCT DRY2 C5'])
-        ->assertSessionHas('sms.reply', fn ($reply) => str_contains($reply, 'සුරැකිණි'));
+                ->assertSessionHas('sms.reply', fn ($reply) => str_contains($reply, 'සුරැකුවා'));
 });
 
 it('blocks buyers from the simulator', function () {
