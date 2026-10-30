@@ -7,8 +7,8 @@ use App\Models\User;
 
 class HandoverService
 {
-    public const HAND_WORDS = ['HAND', 'භාර', 'ஒப்படை'];
-    public const CONFIRM_WORDS = ['OK', 'තහවුරු', 'உறுதி'];
+        public const HAND_WORDS = ['HAND', 'BHARA', 'භාර', 'ஒப்படை'];
+        public const CONFIRM_WORDS = ['OK', 'THAHAWURU', 'තහවුරු', 'உறுதி'];
 
     /** "+94 77 123 4567" and "0771234567" both become "0771234567". */
     public static function normalisePhone(string $phone): string

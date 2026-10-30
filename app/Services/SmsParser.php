@@ -10,7 +10,7 @@ use Carbon\CarbonImmutable;
  */
 class SmsParser
 {
-    public const COMMANDS = ['BATCH', 'තොගය', 'தொகுதி'];
+       public const COMMANDS = ['BATCH', 'THOGAYA', 'තොගය', 'தொகுதி'];
 
     public const GRADES = ['ALBA', 'C5', 'C4', 'H1'];
 

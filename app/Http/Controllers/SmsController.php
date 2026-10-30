@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Batch;
 use App\Models\User;
 use App\Services\AnomalyDetector;
 use App\Services\HandoverService;
+use App\Services\SmsHelp;
 use App\Services\SmsParser;
 use App\Services\SmsReplies;
+use App\Services\StudyRecorder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Services\StudyRecorder;
 
 class SmsController extends Controller
 {
@@ -42,7 +44,9 @@ class SmsController extends Controller
         $tokens = preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY);
         $verb = mb_strtoupper($tokens[0] ?? '');
 
-        if (in_array($verb, HandoverService::HAND_WORDS, true)) {
+        if (isset(SmsHelp::HELP_WORDS[$verb])) {
+            [$ok, $reply, $code] = [true, SmsHelp::help(SmsHelp::HELP_WORDS[$verb]), null];
+        } elseif (in_array($verb, HandoverService::HAND_WORDS, true)) {
             [$ok, $reply, $code] = $this->handleHand($user, $tokens, $lang, $handover);
         } elseif (in_array($verb, HandoverService::CONFIRM_WORDS, true)) {
             [$ok, $reply, $code] = $this->handleConfirm($user, $tokens, $lang, $handover);
@@ -67,11 +71,16 @@ class SmsController extends Controller
     }
 
     /** BATCH P1 40KG 12OCT DRY3 ALBA  (growers only) */
-    /** BATCH P1 40KG 12OCT DRY3 ALBA  (growers only) */
     private function handleBatch(User $user, string $text, string $lang, SmsParser $parser, AnomalyDetector $detector): array
     {
         if ($user->role !== User::ROLE_GROWER) {
             return [false, SmsReplies::handover($lang, 'role'), null];
+        }
+
+        // Only the command word was sent: show how to write the message.
+        $words = preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY);
+        if (count($words) === 1 && in_array(mb_strtoupper($words[0]), SmsParser::COMMANDS, true)) {
+            return [true, SmsHelp::template(SmsHelp::languageOf($words[0])), null];
         }
 
         $parsed = $parser->parse($text);
@@ -83,9 +92,9 @@ class SmsController extends Controller
         }
 
         $batch = $user->batches()->create($parsed['data'] + [
-                'source' => \App\Models\Batch::SOURCE_SMS,
-                'status' => \App\Models\Batch::STATUS_RECORDED,
-            ]);
+            'source' => Batch::SOURCE_SMS,
+            'status' => Batch::STATUS_RECORDED,
+        ]);
         $batch->refresh();
 
         // Flag unusual batches (heavy, too little drying, duplicate, ...).

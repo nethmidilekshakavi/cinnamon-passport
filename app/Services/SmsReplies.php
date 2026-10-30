@@ -4,11 +4,15 @@ namespace App\Services;
 
 use App\Models\Batch;
 
-/** Builds the short reply SMS in the language the user wrote in. */
+/**
+ * Builds the short reply SMS in the language the user wrote in.
+ * Languages: en, si, ta and sg (Singlish: Sinhala in Latin letters, readable on any phone).
+ */
 class SmsReplies
 {
     private const FLAG_NOTE = [
         'en' => 'Flagged for review.',
+        'sg' => 'Pariksha karanna salakunu kala.',
         'si' => 'පරීක්ෂාවට සලකුණු කළා.',
         'ta' => 'மதிப்பாய்வுக்காகக் குறிக்கப்பட்டது.',
     ];
@@ -17,6 +21,7 @@ class SmsReplies
         'en' => [
             'ok' => 'OK {code} saved: {plot}, {kg}kg, {date}, dried {days} days.',
             'fail' => 'ERROR:',
+            'example' => 'Example: BATCH P1 40KG 12OCT DRY3 ALBA',
             'err' => [
                 'command' => 'Start with BATCH. Example: BATCH P1 40KG 12OCT DRY3 ALBA',
                 'plot' => 'Plot name missing (e.g. P1)',
@@ -28,9 +33,25 @@ class SmsReplies
                 'unknown' => 'Not understood: {value}',
             ],
         ],
+        'sg' => [
+            'ok' => 'Surakuwa {code}: {plot}, {kg}kg, {date}, dina {days}k wiyalala.',
+            'fail' => 'Waradi:',
+            'example' => 'Udaharanaya: BATCH P1 40KG 12OCT DRY3 ALBA',
+            'err' => [
+                'command' => 'BATCH ho THOGAYA kiyala patan ganna. Udaharanaya: BATCH P1 40KG 12OCT DRY3 ALBA',
+                'plot' => 'Kaballe nama nathi (udaharanaya: P1)',
+                'weight' => 'Bara nathi (udaharanaya: 40KG)',
+                'weight_range' => 'Bara kilo 0.1-500 athara wenna one',
+                'date' => 'Dinaya nathi, waradi, nathnam anagathaye (udaharanaya: 12OCT)',
+                'drying' => 'Wiyalana dina ganan nathi (udaharanaya: DRY3)',
+                'drying_range' => 'Wiyalana dina 1-30 athara wenna one',
+                'unknown' => 'Therum ganna ba: {value}',
+            ],
+        ],
         'si' => [
             'ok' => 'සුරැකුවා {code}: {plot}, {kg}kg, {date}, දින {days}ක් වියළුවා.',
             'fail' => 'වැරදියි:',
+            'example' => 'උදා: තොගය P1 40KG 12OCT DRY3 ALBA',
             'err' => [
                 'command' => 'තොගය ලෙස පටන් ගන්න. උදා: තොගය P1 40KG 12OCT DRY3 ALBA',
                 'plot' => 'ඉඩම් කොටස නැත (උදා: P1)',
@@ -45,6 +66,7 @@ class SmsReplies
         'ta' => [
             'ok' => 'பதிவானது {code}: {plot}, {kg}kg, {date}, உலர்த்தல் {days} நாள்.',
             'fail' => 'பிழை:',
+            'example' => 'எ.கா: தொகுதி P1 40KG 12OCT DRY3 ALBA',
             'err' => [
                 'command' => 'தொகுதி என்று தொடங்கவும். எ.கா: தொகுதி P1 40KG 12OCT DRY3 ALBA',
                 'plot' => 'நிலப் பகுதி இல்லை (எ.கா: P1)',
@@ -69,6 +91,17 @@ class SmsReplies
             'role' => 'This command is not available for your account.',
             'format_hand' => 'Format: HAND CIN-0001 0771234567',
             'format_ok' => 'Format: OK CIN-0001',
+        ],
+        'sg' => [
+            'requested' => '{code}: {collector} ta bhara dima illa ethi. Ohu thahawuru karanna one.',
+            'confirmed' => '{code} {grower} gen labuna. Goviyata danum dunna.',
+            'no_batch' => '{code} thogaya obe liyuwe na.',
+            'already' => '{code} dan thamath bhara dila.',
+            'no_collector' => 'Ee phone number ekata collector kenek na.',
+            'nothing_pending' => '{code} sandaha thahawuru karanna ithuru bhara dimak na.',
+            'role' => 'Me command eka obe gaanuwata adala na.',
+            'format_hand' => 'Widiya: BHARA CIN-0001 0771234567',
+            'format_ok' => 'Widiya: THAHAWURU CIN-0001',
         ],
         'si' => [
             'requested' => '{code}: {collector} වෙත භාර දීමට ඉල්ලා ඇත. ඔවුන් තහවුරු කළ යුතුයි.',
@@ -100,6 +133,7 @@ class SmsReplies
         $first = mb_strtoupper($parts[0] ?? '');
 
         return match ($first) {
+            'THOGAYA', 'BHARA', 'THAHAWURU' => 'sg',
             'තොගය', 'භාර', 'තහවුරු' => 'si',
             'தொகுதி', 'ஒப்படை', 'உறுதி' => 'ta',
             default => 'en',
@@ -122,13 +156,21 @@ class SmsReplies
     public static function failure(string $lang, array $errors): string
     {
         $messages = [];
+        $hasCommandError = false;
 
         foreach ($errors as $error) {
+            if ($error['code'] === 'command') {
+                $hasCommandError = true;
+            }
+
             $template = self::TEXT[$lang]['err'][$error['code']] ?? self::TEXT[$lang]['err']['unknown'];
             $messages[] = strtr($template, ['{value}' => $error['value'] ?? '']);
         }
 
-        return self::TEXT[$lang]['fail'].' '.implode('; ', array_unique($messages));
+        $reply = self::TEXT[$lang]['fail'].' '.implode('; ', array_unique($messages));
+
+        // Show a correct example after the problems (the command error already has one).
+        return $hasCommandError ? $reply : $reply.' '.self::TEXT[$lang]['example'];
     }
 
     public static function handover(string $lang, string $key, array $vars = []): string
