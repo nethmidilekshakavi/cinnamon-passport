@@ -27,6 +27,15 @@ class SmsController extends Controller
         ]);
     }
 
+        public function guide(Request $request): Response
+        {
+            $this->authorizeRole($request);
+
+            return Inertia::render('Sms/Guide', [
+                'role' => $request->user()->role,
+            ]);
+        }
+
     public function store(
         Request $request,
         SmsParser $parser,

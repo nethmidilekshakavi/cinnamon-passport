@@ -87,6 +87,11 @@ const send = () => {
                     </div>
                 </div>
 
+                            <Link :href="route('sms.guide')" class="cin-muted mt-4 inline-block text-sm underline">
+                                {{ t('sms.guide') }}
+                            </Link>
+                            <br />
+
                 <Link
                     :href="role === 'collector' ? route('collector.home') : route('batches.index')"
                     class="cin-muted mt-6 inline-block text-sm underline"

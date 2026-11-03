@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     // SMS simulator: growers and collectors (role is checked in the controller).
     Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
     Route::post('/sms', [SmsController::class, 'store'])->name('sms.store');
+    Route::get('/sms/guide', [SmsController::class, 'guide'])->name('sms.guide');
 });
 
 // Grower area.
