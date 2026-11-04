@@ -2,15 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Palette (same as Welcome.vue):
+ * deep green #0B3B2C, green #14503A, emerald #1E6B4C, gold #E3B04B,
+ * soft gold #F0C566, cream #FFF9EE, ink #14241B, mint #DDEFE3, line #E8DFC9.
+ * The old --bark-* and --quill names are kept so existing components keep working.
+ */
 :root {
-    --bark-900: #2E170C;
-    --bark-700: #5A2D17;
-    --quill: #E2BC8F;
-    --paper: #FAF6F2;
-    --leaf: #2D6A4F;
-    --ink: #261611;
-    --muted: #6F5A4E;
-    --line: #E4D6C8;
+    --bark-950: #072A1F;
+    --bark-900: #0B3B2C;
+    --bark-700: #14503A;
+    --quill: #E3B04B;
+    --gold-soft: #F0C566;
+    --paper: #FFF9EE;
+    --leaf: #1E6B4C;
+    --mint: #DDEFE3;
+    --ink: #14241B;
+    --muted: #5B6B60;
+    --line: #E8DFC9;
 }
 
 body.font-sans {
@@ -27,17 +36,27 @@ body.font-sans {
 .cin-muted { color: var(--muted); }
 
 /* Surfaces */
-.cin-card { background: #fff; border: 1px solid var(--line); border-radius: 6px; }
+.cin-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(11, 59, 44, 0.04);
+}
 .cin-stamp {
     background: #fff;
     border: 2px solid var(--bark-900);
-    border-radius: 4px;
+    border-radius: 12px;
     box-shadow: 8px 8px 0 var(--quill);
 }
 .cin-pagehead { background: #fff; border-bottom: 1px solid var(--line); }
 .cin-topbar { background: var(--bark-900); color: #fff; }
 .cin-guest { background: var(--bark-900); }
-.cin-hero { position: relative; overflow: hidden; background: var(--bark-900); color: #fff; }
+.cin-hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #0B3B2C 0%, #14503A 60%, #1E6B4C 100%);
+    color: #fff;
+}
 .cin-bg-mark { position: absolute; right: -140px; top: -90px; color: var(--quill); opacity: 0.1; pointer-events: none; }
 
 /* Buttons */
@@ -45,21 +64,22 @@ body.font-sans {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.65rem 1.25rem;
+    padding: 0.65rem 1.4rem;
     border: 2px solid var(--bark-700);
-    border-radius: 8px;
+    border-radius: 9999px;
     background: var(--bark-700);
     color: #fff;
     font-size: 0.9rem;
     font-weight: 600;
     line-height: 1.25rem;
-    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
 }
 .cin-btn:hover { background: var(--bark-900); border-color: var(--bark-900); }
+.cin-btn:active { transform: scale(0.98); }
 .cin-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-.cin-btn:focus-visible { outline: 3px solid var(--leaf); outline-offset: 2px; }
-.cin-btn-light { background: var(--quill); border-color: var(--quill); color: var(--bark-900); }
-.cin-btn-light:hover { background: #fff; border-color: #fff; color: var(--bark-900); }
+.cin-btn:focus-visible { outline: 3px solid var(--quill); outline-offset: 2px; }
+.cin-btn-light { background: var(--quill); border-color: var(--quill); color: var(--ink); font-weight: 700; }
+.cin-btn-light:hover { background: var(--gold-soft); border-color: var(--gold-soft); color: var(--ink); }
 .cin-btn-outline-light { background: transparent; border-color: rgba(255, 255, 255, 0.55); color: #fff; }
 .cin-btn-outline-light:hover { background: rgba(255, 255, 255, 0.12); border-color: #fff; }
 .cin-btn-light:focus-visible,
@@ -75,10 +95,10 @@ body.font-sans {
 .cin-navlink:hover { color: #fff; }
 .cin-navlink-active { border-bottom-color: var(--quill); color: #fff; }
 
-/* Forms: brown focus ring instead of the default indigo */
+/* Forms: green focus ring instead of the default indigo */
 input:focus, select:focus, textarea:focus {
-    border-color: var(--bark-700) !important;
-    box-shadow: 0 0 0 2px rgba(90, 45, 23, 0.25) !important;
+    border-color: var(--leaf) !important;
+    box-shadow: 0 0 0 3px rgba(30, 107, 76, 0.2) !important;
     outline: none !important;
 }
 input[type='checkbox'] { color: var(--bark-700); }
@@ -111,7 +131,7 @@ input[type='checkbox'] { color: var(--bark-700); }
     transform: rotate(-10deg);
 }
 
-/* Loading screen: one orchestrated moment */
+/* Language picker screen */
 .cin-splash {
     position: fixed;
     inset: 0;
@@ -121,7 +141,7 @@ input[type='checkbox'] { color: var(--bark-700); }
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    background: var(--bark-900);
+    background: linear-gradient(160deg, #0B3B2C 0%, #14503A 60%, #1E6B4C 100%);
     color: var(--quill);
 }
 .cin-splash-title {
@@ -136,7 +156,7 @@ input[type='checkbox'] { color: var(--bark-700); }
     height: 3px;
     overflow: hidden;
     border-radius: 2px;
-    background: rgba(226, 188, 143, 0.25);
+    background: rgba(227, 176, 75, 0.25);
 }
 .cin-splash-bar span {
     display: block;
@@ -154,14 +174,84 @@ input[type='checkbox'] { color: var(--bark-700); }
 .cin-fade-leave-active { transition: opacity 0.45s ease; }
 .cin-fade-leave-to { opacity: 0; }
 
+/* Loading screen with the logo */
+.cin-loading {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 1.5rem;
+    background: linear-gradient(160deg, #0B3B2C 0%, #14503A 60%, #1E6B4C 100%);
+    color: #fff;
+    text-align: center;
+}
+.cin-loading-badge {
+    display: grid;
+    place-items: center;
+    width: 9.5rem;
+    height: 9.5rem;
+    overflow: hidden;
+    border-radius: 9999px;
+    background: #fff;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 6px rgba(227, 176, 75, 0.5);
+    opacity: 0;
+    animation: cin-pop 0.7s ease-out 0.05s forwards;
+}
+.cin-loading-badge img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: multiply;
+}
+.cin-loading-title {
+    margin-top: 1.1rem;
+    color: #fff;
+    font-size: 1.75rem;
+    font-weight: 800;
+    opacity: 0;
+    animation: cin-rise 0.5s ease-out 0.6s forwards;
+}
+.cin-loading-tag {
+    color: var(--gold-soft);
+    font-size: 0.95rem;
+    font-weight: 500;
+    opacity: 0;
+    animation: cin-rise 0.5s ease-out 0.85s forwards;
+}
+.cin-loading-bar {
+    width: 160px;
+    height: 4px;
+    margin-top: 1.25rem;
+    overflow: hidden;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.2);
+}
+.cin-loading-bar span {
+    display: block;
+    height: 100%;
+    background: var(--quill);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: cin-bar 1.7s ease-in-out forwards;
+}
+
 @keyframes cin-draw { to { stroke-dashoffset: 0; } }
 @keyframes cin-bar { to { transform: scaleX(1); } }
 @keyframes cin-rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes cin-pop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: none; } }
 
 @media (prefers-reduced-motion: reduce) {
     .cin-draw { animation: none; stroke-dashoffset: 0; }
     .cin-splash-title { animation: none; opacity: 1; }
     .cin-splash-bar span { animation: none; transform: scaleX(1); }
+    .cin-loading-badge,
+    .cin-loading-title,
+    .cin-loading-tag { animation: none; opacity: 1; }
+    .cin-loading-bar span { animation: none; transform: scaleX(1); }
     .cin-fade-leave-active { transition: none; }
 }
 
@@ -178,7 +268,7 @@ input[type='checkbox'] { color: var(--bark-700); }
 }
 .cin-lang-btn:hover { border-color: #fff; color: #fff; }
 .cin-lang-btn:focus-visible { outline: 2px solid var(--quill); outline-offset: 2px; }
-.cin-lang-active { background: var(--quill); border-color: var(--quill); color: var(--bark-900); }
+.cin-lang-active { background: var(--quill); border-color: var(--quill); color: var(--ink); }
 
 .cin-picker { padding: 1.5rem; text-align: center; gap: 1.5rem; }
 .cin-picker-title { display: flex; flex-direction: column; gap: 0.25rem; color: #fff; font-size: 1.15rem; font-weight: 600; }

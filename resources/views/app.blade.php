@@ -6,6 +6,7 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
+        <meta name="theme-color" content="#0B3B2C">
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <meta name="theme-color" content="#2E170C">

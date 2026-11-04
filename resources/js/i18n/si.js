@@ -233,4 +233,23 @@ export default {
                     'guide.p.hint': 'App එක භාවිතා නොකරන ගොවීන්ට මෙම card එක මුද්‍රණය කරන්න. එය ඔබ තෝරාගත් භාෂාවෙන් පෙන්වයි.',
                     'guide.p.footer': 'උපදෙස් සඳහා HELP යවන්න',
 
+                        'welcome.brandSub': 'තොග ගුණාත්මක පාස්පෝටුව',
+                        'welcome.smsTitle': 'SMS එකක් පමණයි ඕන',
+                        'welcome.smsText': 'ගොවියා ඕනෑම දුරකථනයකින් කෙටි SMS එකක් යවනවා. පද්ධතිය තොගය සුරකිනවා, පරීක්ෂා කරනවා, සැණෙකින් පිළිතුරු දෙනවා.',
+                        'welcome.chip1': 'App එකක් ඕන නැහැ',
+                        'welcome.chip2': 'සිංහල, දෙමළ, English',
+                        'welcome.chip3': 'ඕනෑම දුරකථනයක වැඩ කරනවා',
+                        'welcome.rolesTitle': 'එක් පාස්පෝටුවක්, භූමිකා තුනක්',
+                        'welcome.role1.title': 'ගොවියා',
+                        'welcome.role1.text': 'SMS එකකින් හෝ app form එකෙන් හැම තොගයක්ම වාර්තා කරයි.',
+                        'welcome.role2.title': 'එකතුකරන්නා',
+                        'welcome.role2.text': 'ලැබුණු බව තහවුරු කරයි, භාර දීම වාර්තා වේ.',
+                        'welcome.role3.title': 'ගැනුම්කරු',
+                        'welcome.role3.text': 'QR scan කර හෝ කේතය ටයිප් කර තොග විස්තර බලයි.',
+                        'welcome.ctaTitle': 'තොග කේතයක් තියෙනවාද?',
+                        'welcome.ctaText': 'පිවිසීමකින් තොරව තොගයක් පරීක්ෂා කරන්න. ගොවියා ගැන කිසිවක් පෙන්වන්නේ නැහැ.',
+                        'welcome.ctaButton': 'තොගයක් තහවුරු කරන්න',
+
+                            'welcome.tagline': 'ගොවියාගෙන් ලෝකයට, විශ්වාසයෙන්.',
+
 };

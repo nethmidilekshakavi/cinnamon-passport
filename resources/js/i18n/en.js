@@ -232,4 +232,23 @@ export default {
                     'guide.p.hint': 'Print this card for growers who do not use the app. It follows the language you chose.',
                     'guide.p.footer': 'Send HELP for instructions',
 
+                        'welcome.brandSub': 'Batch Quality Passport',
+                        'welcome.smsTitle': 'A text message is all it takes',
+                        'welcome.smsText': 'The grower sends one short SMS from any phone. The system saves the batch, checks it and replies in seconds.',
+                        'welcome.chip1': 'No app needed',
+                        'welcome.chip2': 'Sinhala, Tamil, English',
+                        'welcome.chip3': 'Works on any phone',
+                        'welcome.rolesTitle': 'One passport, three roles',
+                        'welcome.role1.title': 'Grower',
+                        'welcome.role1.text': 'Records each batch by SMS or the app form.',
+                        'welcome.role2.title': 'Collector',
+                        'welcome.role2.text': 'Confirms receipt, so the handover is on record.',
+                        'welcome.role3.title': 'Buyer',
+                        'welcome.role3.text': 'Scans the QR or types the code to see the batch facts.',
+                        'welcome.ctaTitle': 'Have a batch code?',
+                        'welcome.ctaText': 'Check a batch without signing in. Nothing about the grower is shown.',
+                        'welcome.ctaButton': 'Verify a batch',
+
+                            'welcome.tagline': 'From farmer to world, with trust.',
+
 };
