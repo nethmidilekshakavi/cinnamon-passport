@@ -1,7 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import CinnamonMark from '@/Components/CinnamonMark.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import LanguageSwitcher from '@/Components/LanguageSwitcher.vue';
@@ -34,10 +33,12 @@ const links = computed(() => {
         <nav class="cin-topbar">
             <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
                 <div class="flex items-center gap-8">
-                    <Link :href="route('dashboard')" class="flex items-center gap-2.5 text-white">
-                        <CinnamonMark :size="30" />
-                        <span class="font-display text-lg font-bold">Cinnamon Passport</span>
-                    </Link>
+                                        <Link :href="route('dashboard')" class="flex items-center gap-2.5 text-white">
+                                            <span class="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-full bg-white">
+                                                <img src="/images/welcome/logo2.png" alt="" width="36" height="36" class="h-9 w-9 object-cover mix-blend-multiply" />
+                                            </span>
+                                            <span class="font-display text-lg font-bold">Cinnamon Trust</span>
+                                        </Link>
 
                     <div class="hidden gap-6 sm:flex">
                         <Link
