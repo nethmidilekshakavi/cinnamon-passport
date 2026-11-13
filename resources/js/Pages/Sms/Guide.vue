@@ -1,12 +1,20 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, unref } from 'vue';
 import { useI18n } from '@/i18n';
 
 defineProps({ role: String });
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
+
+// The number a grower can call for help filling in the message. Put a real helper's number here.
+const HELPER_NUMBER = '077 2728 738';
+const helpLine = computed(
+    () =>
+        ({ en: 'Need help? Call', si: 'උදව් ඕනද? අමතන්න', ta: 'உதவி வேண்டுமா? அழைக்கவும்' })[unref(locale)] ??
+        'Need help? Call',
+);
 
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 const COMMANDS = ['BATCH', 'THOGAYA', 'තොගය', 'தொகுதி'];
@@ -234,7 +242,9 @@ const panel = 'overflow-hidden rounded-2xl border border-[#EADFC8] bg-white shad
                                 <span>{{ t(p.key) }}</span>
                             </li>
                         </ul>
-                        <p class="pt-1 font-semibold">{{ t('guide.p.footer') }}</p>
+                        <p class="rounded-lg bg-[#FDF7E7] px-3 py-2 text-center font-semibold text-[#4B2106]">
+                            {{ helpLine }}: {{ HELPER_NUMBER }}
+                        </p>
                     </div>
 
                     <button type="button" class="cin-btn" @click="printCard">{{ t('guide.p.print') }}</button>

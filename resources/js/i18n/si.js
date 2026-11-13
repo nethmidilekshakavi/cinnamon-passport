@@ -252,4 +252,19 @@ export default {
 
                             'welcome.tagline': 'ගොවියාගෙන් ලෝකයට, විශ්වාසයෙන්.',
 
+
+                                'auth.phone': 'දුරකථන අංකය',
+                                'auth.phoneHint': 'ඔබ SMS යවන අංකය, උදා: 0771234567',
+                                'auth.role': 'ඔබ කවුද?',
+                                'auth.roleGrower': 'ගොවියා',
+                                'auth.roleCollector': 'එකතුකරන්නා',
+
+                                    'photo.change': 'ඡායාරූපය වෙනස් කරන්න',
+                                    'photo.remove': 'ඉවත් කරන්න',
+                                    'photo.hint': 'JPG, PNG හෝ WEBP, 2 MB ට අඩු.',
+                                    'photo.roleBuyer': 'ගැනුම්කරු',
+
+
+
+
 };

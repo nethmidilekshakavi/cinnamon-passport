@@ -251,4 +251,16 @@ export default {
 
                             'welcome.tagline': 'From farmer to world, with trust.',
 
+                                'auth.phone': 'Phone number',
+                                'auth.phoneHint': 'The number you send SMS from, for example 0771234567',
+                                'auth.role': 'I am a',
+                                'auth.roleGrower': 'Grower',
+                                'auth.roleCollector': 'Collector',
+
+
+                                    'photo.change': 'Change photo',
+                                    'photo.remove': 'Remove',
+                                    'photo.hint': 'JPG, PNG or WEBP, up to 2 MB.',
+                                    'photo.roleBuyer': 'Buyer',
+
 };

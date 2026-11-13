@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
@@ -39,6 +40,15 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+        /** Sent to the frontend with the user, so the layout can show the photo. */
+        protected $appends = ['photo_url'];
+
+        protected function photoUrl(): Attribute
+        {
+            // A relative URL, so it works on 127.0.0.1 and on localhost alike.
+            return Attribute::get(fn () => $this->photo_path ? '/storage/'.$this->photo_path : null);
+        }
 
     /**
      * Get the attributes that should be cast.

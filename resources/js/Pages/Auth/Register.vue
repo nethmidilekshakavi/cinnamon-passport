@@ -13,9 +13,16 @@ const brand = {
 const form = useForm({
     name: '',
     email: '',
+    phone: '',
+    role: 'grower',
     password: '',
     password_confirmation: '',
 });
+
+const roles = [
+    { value: 'grower', label: 'auth.roleGrower' },
+    { value: 'collector', label: 'auth.roleCollector' },
+];
 
 const submit = () => {
     form.post(route('register'), {
@@ -76,6 +83,39 @@ const submit = () => {
                         />
                         <InputError class="mt-2" :message="form.errors.email" />
                     </div>
+
+                                        <div class="mt-5">
+                                            <span class="block text-sm font-semibold">{{ t('auth.role') }}</span>
+                                            <div class="mt-1.5 grid grid-cols-2 gap-3">
+                                                <label
+                                                    v-for="r in roles"
+                                                    :key="r.value"
+                                                    class="flex cursor-pointer items-center justify-center rounded-2xl border-2 px-3 py-3 text-sm font-semibold transition"
+                                                    :class="form.role === r.value ? 'border-[#14503A] bg-[#E4EFD6] text-[#14503A]' : 'border-[#E8DFC9] bg-[#FFFDF8]'"
+                                                >
+                                                    <input v-model="form.role" type="radio" :value="r.value" class="sr-only" />
+                                                    {{ t(r.label) }}
+                                                </label>
+                                            </div>
+                                            <InputError class="mt-2" :message="form.errors.role" />
+                                        </div>
+
+                                        <div class="mt-5">
+                                            <label for="phone" class="block text-sm font-semibold">{{ t('auth.phone') }}</label>
+                                            <input
+                                                id="phone"
+                                                v-model="form.phone"
+                                                type="tel"
+                                                inputmode="numeric"
+                                                maxlength="12"
+                                                placeholder="0771234567"
+                                                class="cw-input mt-1.5"
+                                                required
+                                                autocomplete="tel"
+                                            />
+                                            <p class="mt-1 text-xs text-[#14241B]/60">{{ t('auth.phoneHint') }}</p>
+                                            <InputError class="mt-2" :message="form.errors.phone" />
+                                        </div>
 
                     <div class="mt-5">
                         <label for="password" class="block text-sm font-semibold">{{ t('auth.password') }}</label>

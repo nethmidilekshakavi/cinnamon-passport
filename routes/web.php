@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\StudyController;
+use App\Http\Controllers\ProfilePhotoController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -40,6 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
     Route::post('/sms', [SmsController::class, 'store'])->name('sms.store');
     Route::get('/sms/guide', [SmsController::class, 'guide'])->name('sms.guide');
+
+        Route::post('/profile/photo', [ProfilePhotoController::class, 'update'])->name('profile.photo.update');
+        Route::delete('/profile/photo', [ProfilePhotoController::class, 'destroy'])->name('profile.photo.destroy');
 });
 
 // Grower area.

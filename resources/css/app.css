@@ -49,7 +49,7 @@ body.font-sans {
     box-shadow: 8px 8px 0 var(--quill);
 }
 .cin-pagehead { background: #fff; border-bottom: 1px solid var(--line); }
-.cin-topbar { background: var(--bark-900); color: #fff; }
+.cin-topbar { background: #4B2106; color: #fff; }
 .cin-guest { background: var(--bark-900); }
 .cin-hero {
     position: relative;

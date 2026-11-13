@@ -5,6 +5,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import LanguageSwitcher from '@/Components/LanguageSwitcher.vue';
 import { useI18n } from '@/i18n';
+import UserAvatar from '@/Components/UserAvatar.vue';
 
 const { t, locale } = useI18n();
 const page = usePage();
@@ -58,7 +59,10 @@ const links = computed(() => {
 
                     <Dropdown align="right" width="48">
                         <template #trigger>
-                            <button type="button" class="cin-navlink">{{ user.name }}</button>
+                            <button type="button" class="cin-navlink flex items-center gap-2">
+                                <UserAvatar :user="user" :size="28" />
+                                {{ user.name }}
+                            </button>
                         </template>
                         <template #content>
                             <DropdownLink :href="route('profile.edit')">{{ t('nav.profile') }}</DropdownLink>

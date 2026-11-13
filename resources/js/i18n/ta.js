@@ -251,4 +251,17 @@ export default {
 
                             'welcome.tagline': 'விவசாயியிடமிருந்து உலகிற்கு, நம்பிக்கையுடன்.',
 
+
+                                'auth.phone': 'தொலைபேசி எண்',
+                                'auth.phoneHint': 'நீங்கள் SMS அனுப்பும் எண், எ.கா. 0771234567',
+                                'auth.role': 'நீங்கள் யார்?',
+                                'auth.roleGrower': 'விவசாயி',
+                                'auth.roleCollector': 'சேகரிப்பாளர்',
+
+
+                                    'photo.change': 'புகைப்படத்தை மாற்று',
+                                    'photo.remove': 'நீக்கு',
+                                    'photo.hint': 'JPG, PNG அல்லது WEBP, 2 MB வரை.',
+                                    'photo.roleBuyer': 'வாங்குபவர்',
+
 };
