@@ -24,7 +24,6 @@ const links = computed(() => {
     return [
         { label: t('nav.myBatches'), href: route('batches.index'), active: route().current('batches.index') },
         { label: t('nav.newBatch'), href: route('batches.create'), active: route().current('batches.create') },
-        { label: t('nav.study'), href: route('study.index'), active: route().current('study.*') },
     ];
 });
 </script>
