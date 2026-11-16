@@ -5,6 +5,7 @@ import ta from './ta';
 
 const messages = { en, si, ta };
 const STORAGE_KEY = 'cp_lang';
+const SESSION_KEY = 'cp_lang_session';
 
 export const LOCALES = [
     { code: 'si', label: 'සිංහල' },
@@ -17,13 +18,23 @@ const readSaved = () => {
         const value = localStorage.getItem(STORAGE_KEY);
         return value && Object.hasOwn(messages, value) ? value : null;
     } catch {
-        return null; // storage blocked: the language picker simply shows again
+        return null; // storage blocked: the app starts in English
+    }
+};
+
+// True once the language was picked in this browser tab session.
+// The picker shows again whenever the project is opened in a new tab.
+const readSessionPicked = () => {
+    try {
+        return sessionStorage.getItem(SESSION_KEY) === '1';
+    } catch {
+        return false; // storage blocked: the language picker simply shows again
     }
 };
 
 const saved = readSaved();
 const locale = ref(saved ?? 'en');
-const chosen = ref(saved !== null);
+const chosen = ref(readSessionPicked());
 
 const applyDocumentLang = (code) => {
     if (typeof document !== 'undefined') {
@@ -44,6 +55,12 @@ export const setLocale = (code) => {
         localStorage.setItem(STORAGE_KEY, code);
     } catch {
         // storage blocked: the choice lasts until the page is reloaded
+    }
+
+    try {
+        sessionStorage.setItem(SESSION_KEY, '1');
+    } catch {
+        // storage blocked: the picker may show again on the next page load
     }
 };
 

@@ -85,6 +85,9 @@ const roles = computed(() =>
     })),
 );
 
+
+
+
 // Palette: deep #0B3B2C, green #14503A, gold #E3B04B, cream #FFF9EE, ink #14241B, mint #DDEFE3, line #E8DFC9
 const btnGold =
     'inline-flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#E3B04B] px-7 font-bold text-[#14241B] transition hover:bg-[#F0C566] active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:w-auto';
