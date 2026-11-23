@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\CollectorController;
 use App\Http\Controllers\ProfileController;
@@ -77,4 +78,9 @@ Route::post('/study/sus', [StudyController::class, 'susStore'])->name('study.sus
 Route::get('/study/results', [StudyController::class, 'results'])->name('study.results');
 Route::get('/study/export', [StudyController::class, 'export'])->name('study.export');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/sell', [BrandController::class, 'create'])->name('seller.create');
+    Route::post('/sell', [BrandController::class, 'store'])->name('seller.store');
+    Route::get('/seller/dashboard', [BrandController::class, 'dashboard'])->name('seller.dashboard');
+});
 require __DIR__.'/auth.php';
