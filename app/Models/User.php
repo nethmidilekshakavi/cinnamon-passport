@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -71,5 +73,10 @@ class User extends Authenticatable
     public function batches(): HasMany
     {
         return $this->hasMany(Batch::class, 'grower_id');
+    }
+
+    public function brand(): HasOne
+    {
+        return $this->hasOne(Brand::class);
     }
 }
