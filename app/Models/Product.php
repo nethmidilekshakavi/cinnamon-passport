@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Concerns\HasUniqueSlug;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -16,6 +17,8 @@ class Product extends Model
     public const GROWING_METHODS = ['organic', 'compost', 'inorganic'];
     public const UNITS = ['g', 'ml'];
 
+    protected $appends = ['image_url'];
+
     protected $fillable = [
         'brand_id', 'category_id', 'name', 'slug', 'description',
         'quality_level', 'grade', 'ingredients', 'net_quantity', 'unit',
@@ -26,12 +29,19 @@ class Product extends Model
     protected function casts(): array
     {
         return [
-            'production_date' => 'date',
-            'expiry_date' => 'date',
+            'production_date' => 'date:Y-m-d',
+            'expiry_date' => 'date:Y-m-d',
             'price' => 'decimal:2',
             'is_organic' => 'boolean',
             'is_published' => 'boolean',
         ];
+    }
+
+    protected function imageUrl(): Attribute
+    {
+        return Attribute::get(
+            fn () => $this->image_path ? '/storage/'.$this->image_path : null
+        );
     }
 
     public function brand(): BelongsTo

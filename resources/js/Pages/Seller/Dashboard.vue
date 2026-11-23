@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 
 defineProps({ brand: Object });
 </script>
@@ -17,9 +17,16 @@ defineProps({ brand: Object });
 
                 <div class="mt-6 rounded-lg bg-white p-6 shadow">
                     <h2 class="font-semibold">Products ({{ brand.products_count }})</h2>
-                    <p class="mt-2 text-sm text-gray-600">
-                        Adding products comes in the next step.
-                    </p>
+                    <div class="mt-4 flex gap-3">
+                        <Link :href="route('seller.products.index')"
+                            class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50">
+                            Manage products
+                        </Link>
+                        <Link :href="route('seller.products.create')"
+                            class="rounded-md bg-yellow-600 px-4 py-2 text-sm font-semibold text-white hover:bg-yellow-700">
+                            Add product
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Middleware\EnsureUserHasBrand;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\CollectorController;
@@ -82,5 +84,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/sell', [BrandController::class, 'create'])->name('seller.create');
     Route::post('/sell', [BrandController::class, 'store'])->name('seller.store');
     Route::get('/seller/dashboard', [BrandController::class, 'dashboard'])->name('seller.dashboard');
+});
+Route::middleware(['auth', EnsureUserHasBrand::class])->prefix('seller')->name('seller.')->group(function () {
+    Route::resource('products', ProductController::class)->except(['show']);
 });
 require __DIR__.'/auth.php';
