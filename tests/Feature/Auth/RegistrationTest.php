@@ -24,7 +24,7 @@ test('new users can register as a grower', function () {
     $response = $this->post('/register', registration());
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertRedirect('/');
 
     $user = User::where('email', 'test@example.com')->first();
     expect($user->role)->toBe('grower');
@@ -38,15 +38,24 @@ test('a collector can register and gets the collector role', function () {
     expect(User::where('email', 'test@example.com')->first()->role)->toBe('collector');
 });
 
-test('nobody can register as a buyer or invent a role', function () {
-    foreach (['buyer', 'admin', ''] as $role) {
+test('a user who sends no role becomes a buyer', function () {
+    $this->post('/register', registration(['role' => null, 'phone' => '']));
+
+    $this->assertAuthenticated();
+
+    $user = User::where('email', 'test@example.com')->first();
+    expect($user->role)->toBe('buyer');
+    expect($user->phone)->toBeNull();
+});
+
+test('nobody can pick a buyer, seller or admin role by hand', function () {
+    foreach (['buyer', 'admin', 'seller'] as $role) {
         $this->post('/register', registration(['role' => $role]))->assertSessionHasErrors('role');
         $this->assertGuest();
     }
 });
 
-test('the phone number is required, well formed and unique', function () {
-    $this->post('/register', registration(['phone' => '']))->assertSessionHasErrors('phone');
+test('the phone number is optional, well formed and unique', function () {
     $this->post('/register', registration(['phone' => '12345']))->assertSessionHasErrors('phone');
     $this->assertGuest();
 
