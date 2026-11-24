@@ -1,15 +1,18 @@
 <script setup>
 import MarketLayout from '@/Layouts/MarketLayout.vue';
 import ProductCard from '@/Components/Market/ProductCard.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 const props = defineProps({
     product: { type: Object, required: true },
     isExpired: { type: Boolean, default: false },
     isOwner: { type: Boolean, default: false },
+    canOrder: { type: Boolean, default: false },
     more: { type: Array, default: () => [] },
 });
+
+const user = computed(() => usePage().props.auth?.user ?? null);
 
 const cap = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : '');
 const p = props.product;
@@ -86,6 +89,20 @@ const badge = {
                     </p>
 
                     <p v-if="product.description" class="mt-5 whitespace-pre-line text-[#14241B]/80">{{ product.description }}</p>
+
+                    <!-- Order -->
+                    <div class="mt-6">
+                        <Link v-if="canOrder && user" :href="route('checkout.create', product.slug)"
+                            class="inline-block rounded-full bg-[#E3B04B] px-8 py-3 font-bold text-[#14241B] shadow transition hover:bg-[#d49f3c]">
+                            Order this product
+                        </Link>
+                        <Link v-else-if="canOrder" :href="route('login')"
+                            class="inline-block rounded-full bg-[#E3B04B] px-8 py-3 font-bold text-[#14241B] shadow transition hover:bg-[#d49f3c]">
+                            Log in to order
+                        </Link>
+                        <p v-else-if="isOwner" class="text-sm text-[#14241B]/60">This is your own product.</p>
+                        <p v-else class="text-sm text-red-700">This product cannot be ordered right now.</p>
+                    </div>
                 </div>
             </div>
 

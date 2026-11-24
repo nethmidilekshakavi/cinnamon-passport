@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SellerOrderController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MarketController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\EnsureUserHasBrand;
@@ -15,12 +19,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\StudyController;
 use App\Http\Controllers\ProfilePhotoController;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-    ]);
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Public batch verification (QR codes point here). No login needed.
 Route::get('/verify', [VerifyController::class, 'index'])->name('verify.index');
@@ -93,4 +92,19 @@ Route::middleware(['auth', EnsureUserHasBrand::class])->prefix('seller')->name('
 Route::get('/market', [MarketController::class, 'index'])->name('market.index');
 Route::get('/market/{product:slug}', [MarketController::class, 'show'])->name('market.show');
 Route::get('/brands/{brand:slug}', [MarketController::class, 'brand'])->name('market.brand');
+// Buying (login needed)
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout/{product:slug}', [CheckoutController::class, 'create'])->name('checkout.create');
+    Route::post('/checkout/{product:slug}', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::post('/orders/{order}/received', [OrderController::class, 'received'])->name('orders.received');
+});
+
+// Selling: orders for my brand
+Route::middleware(['auth', EnsureUserHasBrand::class])->prefix('seller')->name('seller.')->group(function () {
+    Route::get('/orders', [SellerOrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders/{order}/ship', [SellerOrderController::class, 'ship'])->name('orders.ship');
+});
 require __DIR__.'/auth.php';

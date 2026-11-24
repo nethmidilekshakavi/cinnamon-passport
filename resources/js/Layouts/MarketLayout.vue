@@ -21,6 +21,7 @@ const user = computed(() => usePage().props.auth?.user ?? null);
 
                 <nav class="flex flex-wrap items-center gap-4 text-sm font-medium">
                     <Link :href="route('market.index')" class="hover:text-[#E3B04B]">Marketplace</Link>
+                    <Link v-if="user" :href="route('orders.index')" class="hover:text-[#E3B04B]">My orders</Link>
                     <Link :href="route('seller.create')" class="hover:text-[#E3B04B]">Sell on Cinnamon Trust</Link>
                     <template v-if="user">
                         <Link :href="route('profile.edit')" class="hover:text-[#E3B04B]">{{ user.name }}</Link>

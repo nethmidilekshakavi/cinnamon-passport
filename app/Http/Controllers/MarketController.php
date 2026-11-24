@@ -93,6 +93,7 @@ class MarketController extends Controller
             'product' => $product,
             'isExpired' => $product->isExpired(),
             'isOwner' => $isOwner,
+            'canOrder' => $product->is_published && $product->stock > 0 && ! $product->isExpired() && ! $isOwner,
             'more' => $more,
         ]);
     }
