@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MarketController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\EnsureUserHasBrand;
 use App\Http\Controllers\BrandController;
@@ -88,4 +89,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', EnsureUserHasBrand::class])->prefix('seller')->name('seller.')->group(function () {
     Route::resource('products', ProductController::class)->except(['show']);
 });
+// Public marketplace (no login needed)
+Route::get('/market', [MarketController::class, 'index'])->name('market.index');
+Route::get('/market/{product:slug}', [MarketController::class, 'show'])->name('market.show');
+Route::get('/brands/{brand:slug}', [MarketController::class, 'brand'])->name('market.brand');
 require __DIR__.'/auth.php';
