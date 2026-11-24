@@ -57,7 +57,7 @@ const remove = (product) => {
                                         <div v-else class="h-10 w-10 rounded bg-gray-100"></div>
                                         <div>
                                             <div class="font-medium">{{ p.name }}</div>
-                                            <div class="text-xs text-gray-500">{{ p.net_quantity }} {{ p.unit }}<span v-if="p.grade"> Â· {{ p.grade }}</span></div>
+                                            <div class="text-xs text-gray-500">{{ p.net_quantity }} {{ p.unit }}<span v-if="p.grade"> · {{ p.grade }}</span></div>
                                         </div>
                                     </div>
                                 </td>

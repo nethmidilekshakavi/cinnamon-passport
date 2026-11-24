@@ -54,7 +54,7 @@ const badge = {
                 <div class="aspect-square overflow-hidden rounded-2xl bg-[#F3EBD8] ring-1 ring-black/5">
                     <img v-if="product.image_url" :src="product.image_url" :alt="product.name"
                         class="h-full w-full object-cover" />
-                    <div v-else class="grid h-full w-full place-items-center text-7xl">ðŸŒ¿</div>
+                    <div v-else class="grid h-full w-full place-items-center text-7xl">🌿</div>
                 </div>
 
                 <div>
@@ -66,11 +66,11 @@ const badge = {
                         <Link :href="route('market.brand', product.brand.slug)" class="font-semibold text-[#14503A] underline">
                             {{ product.brand.name }}
                         </Link>
-                        Â· {{ product.brand.district }}, {{ product.brand.country }}
+                        · {{ product.brand.district }}, {{ product.brand.country }}
                     </p>
                     <p class="mt-1 text-sm">
                         <template v-if="rating.count">
-                            <span class="text-[#B5832F]">â˜…</span>
+                            <span class="text-[#B5832F]">★</span>
                             <strong>{{ rating.average }}</strong> / 5
                             <span class="text-[#14241B]/60">({{ rating.count }} seller {{ rating.count === 1 ? 'rating' : 'ratings' }})</span>
                         </template>
@@ -138,7 +138,7 @@ const badge = {
                 <h2 class="text-xl font-bold">What buyers say about {{ product.brand.name }}</h2>
                 <p class="mt-1 text-sm text-[#14241B]/60">Only buyers with a delivered order can rate a seller.</p>
                 <div v-for="r in reviews" :key="r.id" class="mt-4 border-t border-[#F0E8D5] pt-4">
-                    <p class="text-[#B5832F]">{{ 'â˜…'.repeat(r.rating) }}<span class="text-gray-300">{{ 'â˜…'.repeat(5 - r.rating) }}</span></p>
+                    <p class="text-[#B5832F]">{{ '★'.repeat(r.rating) }}<span class="text-gray-300">{{ '★'.repeat(5 - r.rating) }}</span></p>
                     <p v-if="r.comment" class="mt-1">{{ r.comment }}</p>
                     <p class="mt-1 text-xs text-[#14241B]/50">{{ r.buyer?.name }}</p>
                 </div>

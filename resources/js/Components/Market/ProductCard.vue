@@ -18,14 +18,14 @@ const badge = {
         <div class="aspect-square bg-[#F3EBD8]">
             <img v-if="product.image_url" :src="product.image_url" :alt="product.name"
                 class="h-full w-full object-cover transition group-hover:scale-105" />
-            <div v-else class="grid h-full w-full place-items-center text-4xl">ðŸŒ¿</div>
+            <div v-else class="grid h-full w-full place-items-center text-4xl">🌿</div>
         </div>
 
         <div class="flex flex-1 flex-col gap-2 p-4">
             <p class="text-xs uppercase tracking-wide text-[#B5832F]">{{ product.category?.name }}</p>
             <h3 class="font-semibold leading-snug">{{ product.name }}</h3>
             <p class="text-xs text-[#14241B]/60">
-                {{ product.brand?.name }} Â· {{ product.brand?.district }}
+                {{ product.brand?.name }} · {{ product.brand?.district }}
             </p>
 
             <div class="flex flex-wrap gap-1.5">
@@ -43,7 +43,7 @@ const badge = {
                 <span class="text-lg font-bold text-[#14503A]">${{ product.price }}</span>
                 <span class="text-xs text-[#14241B]/60">
                     {{ product.net_quantity }} {{ product.unit }}
-                    <template v-if="product.stock === 0"> Â· Out of stock</template>
+                    <template v-if="product.stock === 0"> · Out of stock</template>
                 </span>
             </div>
         </div>

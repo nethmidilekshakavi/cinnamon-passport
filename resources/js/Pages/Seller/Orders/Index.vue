@@ -38,12 +38,12 @@ const ship = (order) => router.post(route('seller.orders.ship', order.id), {}, {
             <div v-else class="space-y-4">
                 <div v-for="o in orders" :key="o.id" class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
                     <div class="flex flex-wrap items-center justify-between gap-2">
-                        <p class="font-bold">{{ o.order_number }} <span class="text-sm font-normal text-[#14241B]/60">Â· {{ fmt(o.placed_at) }}</span></p>
+                        <p class="font-bold">{{ o.order_number }} <span class="text-sm font-normal text-[#14241B]/60">· {{ fmt(o.placed_at) }}</span></p>
                         <span class="rounded-full px-3 py-1 text-xs font-medium capitalize" :class="badge[o.status]">{{ o.status }}</span>
                     </div>
 
-                    <p class="mt-2">{{ o.product_name }} <span class="text-sm text-[#14241B]/60">({{ o.product_size }}) Ã— {{ o.quantity }}</span></p>
-                    <p class="text-sm text-[#14241B]/60">Total ${{ o.total }} Â· simulated payment</p>
+                    <p class="mt-2">{{ o.product_name }} <span class="text-sm text-[#14241B]/60">({{ o.product_size }}) × {{ o.quantity }}</span></p>
+                    <p class="text-sm text-[#14241B]/60">Total ${{ o.total }} · simulated payment</p>
 
                     <div class="mt-3 rounded-xl bg-[#FFF9EC] p-3 text-sm">
                         <p class="font-semibold">Ship to</p>

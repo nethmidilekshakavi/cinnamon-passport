@@ -80,11 +80,11 @@ const reviewError = computed(() => usePage().props.errors?.review ?? null);
                         </Link>
                         <p v-else class="font-semibold">{{ order.product_name }}</p>
                         <p class="text-sm text-[#14241B]/60">
-                            {{ order.product_size }} Â· Sold by
+                            {{ order.product_size }} · Sold by
                             <Link v-if="order.brand" :href="route('market.brand', order.brand.slug)" class="underline">{{ order.brand.name }}</Link>
                         </p>
                     </div>
-                    <p class="text-right text-sm">${{ order.unit_price }} Ã— {{ order.quantity }}</p>
+                    <p class="text-right text-sm">${{ order.unit_price }} × {{ order.quantity }}</p>
                 </div>
                 <p class="mt-4 flex justify-between border-t border-[#F0E8D5] pt-3 text-lg font-bold">
                     <span>Total (USD)</span><span>${{ order.total }}</span>
@@ -106,7 +106,7 @@ const reviewError = computed(() => usePage().props.errors?.review ?? null);
                 <h2 class="text-lg font-bold">Rate the seller</h2>
 
                 <div v-if="review">
-                    <p class="mt-2 text-2xl text-[#B5832F]">{{ 'â˜…'.repeat(review.rating) }}<span class="text-gray-300">{{ 'â˜…'.repeat(5 - review.rating) }}</span></p>
+                    <p class="mt-2 text-2xl text-[#B5832F]">{{ '★'.repeat(review.rating) }}<span class="text-gray-300">{{ '★'.repeat(5 - review.rating) }}</span></p>
                     <p v-if="review.comment" class="mt-2 text-[#14241B]/80">{{ review.comment }}</p>
                     <p class="mt-1 text-xs text-[#14241B]/50">Thank you for your rating.</p>
                 </div>
@@ -115,7 +115,7 @@ const reviewError = computed(() => usePage().props.errors?.review ?? null);
                     <div class="flex gap-1 text-4xl">
                         <button v-for="n in 5" :key="n" type="button" @click="reviewForm.rating = n"
                             :aria-label="n + ' star'"
-                            :class="n <= reviewForm.rating ? 'text-[#E3B04B]' : 'text-gray-300'">â˜…</button>
+                            :class="n <= reviewForm.rating ? 'text-[#E3B04B]' : 'text-gray-300'">★</button>
                     </div>
                     <p v-if="reviewForm.errors.rating" class="text-sm text-red-600">{{ reviewForm.errors.rating }}</p>
                     <textarea v-model="reviewForm.comment" rows="3" maxlength="1000" placeholder="Tell other buyers about the product and delivery (optional)"

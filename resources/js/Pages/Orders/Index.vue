@@ -35,9 +35,9 @@ const fmt = (d) => (d ? new Date(d).toLocaleDateString('en-GB', { day: 'numeric'
                         <p class="font-bold">{{ o.order_number }}</p>
                         <span class="rounded-full px-3 py-1 text-xs font-medium capitalize" :class="badge[o.status]">{{ o.status }}</span>
                     </div>
-                    <p class="mt-2">{{ o.product_name }} <span class="text-sm text-[#14241B]/60">Ã— {{ o.quantity }}</span></p>
+                    <p class="mt-2">{{ o.product_name }} <span class="text-sm text-[#14241B]/60">× {{ o.quantity }}</span></p>
                     <p class="mt-1 text-sm text-[#14241B]/60">
-                        {{ o.brand?.name }} Â· {{ fmt(o.placed_at) }} Â· Total ${{ o.total }}
+                        {{ o.brand?.name }} · {{ fmt(o.placed_at) }} · Total ${{ o.total }}
                     </p>
                 </Link>
             </div>

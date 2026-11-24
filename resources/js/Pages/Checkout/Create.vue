@@ -106,10 +106,10 @@ const field = 'mt-1 block w-full rounded-lg border border-[#E8DFC9] bg-white px-
                     <h2 class="text-lg font-bold">Order summary</h2>
                     <div class="mt-4 flex gap-3">
                         <img v-if="product.image_url" :src="product.image_url" alt="" class="h-16 w-16 rounded-lg object-cover" />
-                        <div v-else class="grid h-16 w-16 place-items-center rounded-lg bg-[#F3EBD8] text-2xl">ðŸŒ¿</div>
+                        <div v-else class="grid h-16 w-16 place-items-center rounded-lg bg-[#F3EBD8] text-2xl">🌿</div>
                         <div>
                             <p class="font-semibold leading-snug">{{ product.name }}</p>
-                            <p class="text-xs text-[#14241B]/60">{{ product.net_quantity }} {{ product.unit }} Â· {{ product.brand.name }}</p>
+                            <p class="text-xs text-[#14241B]/60">{{ product.net_quantity }} {{ product.unit }} · {{ product.brand.name }}</p>
                         </div>
                     </div>
                     <dl class="mt-4 space-y-2 text-sm">
