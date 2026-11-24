@@ -93,6 +93,11 @@ class MarketController extends Controller
             'product' => $product,
             'isExpired' => $product->isExpired(),
             'isOwner' => $isOwner,
+            'rating' => [
+                'average' => round((float) \App\Models\Review::where('brand_id', $product->brand_id)->avg('rating'), 1),
+                'count' => \App\Models\Review::where('brand_id', $product->brand_id)->count(),
+            ],
+            'reviews' => \App\Models\Review::where('brand_id', $product->brand_id)->with('buyer:id,name')->latest()->take(5)->get(['id', 'user_id', 'rating', 'comment', 'created_at']),
             'canOrder' => $product->is_published && $product->stock > 0 && ! $product->isExpired() && ! $isOwner,
             'more' => $more,
         ]);

@@ -1,6 +1,6 @@
 <script setup>
 import MarketLayout from '@/Layouts/MarketLayout.vue';
-import { Head, Link, router, usePage } from '@inertiajs/vue3';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -8,6 +8,8 @@ const props = defineProps({
     justPlaced: { type: Boolean, default: false },
     canCancel: { type: Boolean, default: false },
     canMarkReceived: { type: Boolean, default: false },
+    canReview: { type: Boolean, default: false },
+    review: { type: Object, default: null },
 });
 
 const error = computed(() => usePage().props.errors?.order ?? null);
@@ -34,6 +36,10 @@ const cancel = () => {
 };
 
 const received = () => router.post(route('orders.received', props.order.id));
+
+const reviewForm = useForm({ rating: 0, comment: '' });
+const submitReview = () => reviewForm.post(route('orders.review', props.order.id), { preserveScroll: true });
+const reviewError = computed(() => usePage().props.errors?.review ?? null);
 </script>
 
 <template>
@@ -94,6 +100,32 @@ const received = () => router.post(route('orders.received', props.order.id));
                     {{ order.shipping_city }}<span v-if="order.shipping_postal_code"> {{ order.shipping_postal_code }}</span><br />
                     {{ order.shipping_country }}
                 </p>
+            </section>
+
+            <section v-if="canReview || review" class="mt-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5">
+                <h2 class="text-lg font-bold">Rate the seller</h2>
+
+                <div v-if="review">
+                    <p class="mt-2 text-2xl text-[#B5832F]">{{ 'â˜…'.repeat(review.rating) }}<span class="text-gray-300">{{ 'â˜…'.repeat(5 - review.rating) }}</span></p>
+                    <p v-if="review.comment" class="mt-2 text-[#14241B]/80">{{ review.comment }}</p>
+                    <p class="mt-1 text-xs text-[#14241B]/50">Thank you for your rating.</p>
+                </div>
+
+                <form v-else @submit.prevent="submitReview" class="mt-3 space-y-3">
+                    <div class="flex gap-1 text-4xl">
+                        <button v-for="n in 5" :key="n" type="button" @click="reviewForm.rating = n"
+                            :aria-label="n + ' star'"
+                            :class="n <= reviewForm.rating ? 'text-[#E3B04B]' : 'text-gray-300'">â˜…</button>
+                    </div>
+                    <p v-if="reviewForm.errors.rating" class="text-sm text-red-600">{{ reviewForm.errors.rating }}</p>
+                    <textarea v-model="reviewForm.comment" rows="3" maxlength="1000" placeholder="Tell other buyers about the product and delivery (optional)"
+                        class="w-full rounded-lg border border-[#E8DFC9] px-3 py-2 text-sm"></textarea>
+                    <p v-if="reviewError" class="text-sm text-red-600">{{ reviewError }}</p>
+                    <button type="submit" :disabled="reviewForm.processing || reviewForm.rating === 0"
+                        class="rounded-full bg-[#14503A] px-6 py-2 font-semibold text-white disabled:opacity-50">
+                        Submit rating
+                    </button>
+                </form>
             </section>
 
             <div class="mt-6 flex flex-wrap gap-3">

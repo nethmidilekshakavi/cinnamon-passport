@@ -10,6 +10,8 @@ const props = defineProps({
     isOwner: { type: Boolean, default: false },
     canOrder: { type: Boolean, default: false },
     more: { type: Array, default: () => [] },
+    rating: { type: Object, default: () => ({ average: 0, count: 0 }) },
+    reviews: { type: Array, default: () => [] },
 });
 
 const user = computed(() => usePage().props.auth?.user ?? null);
@@ -65,6 +67,14 @@ const badge = {
                             {{ product.brand.name }}
                         </Link>
                         Â· {{ product.brand.district }}, {{ product.brand.country }}
+                    </p>
+                    <p class="mt-1 text-sm">
+                        <template v-if="rating.count">
+                            <span class="text-[#B5832F]">â˜…</span>
+                            <strong>{{ rating.average }}</strong> / 5
+                            <span class="text-[#14241B]/60">({{ rating.count }} seller {{ rating.count === 1 ? 'rating' : 'ratings' }})</span>
+                        </template>
+                        <span v-else class="text-[#14241B]/60">No seller ratings yet</span>
                     </p>
 
                     <div class="mt-3 flex flex-wrap gap-2">
@@ -122,6 +132,16 @@ const badge = {
                         </dd>
                     </div>
                 </dl>
+            </section>
+
+            <section v-if="reviews.length" class="mt-10 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5">
+                <h2 class="text-xl font-bold">What buyers say about {{ product.brand.name }}</h2>
+                <p class="mt-1 text-sm text-[#14241B]/60">Only buyers with a delivered order can rate a seller.</p>
+                <div v-for="r in reviews" :key="r.id" class="mt-4 border-t border-[#F0E8D5] pt-4">
+                    <p class="text-[#B5832F]">{{ 'â˜…'.repeat(r.rating) }}<span class="text-gray-300">{{ 'â˜…'.repeat(5 - r.rating) }}</span></p>
+                    <p v-if="r.comment" class="mt-1">{{ r.comment }}</p>
+                    <p class="mt-1 text-xs text-[#14241B]/50">{{ r.buyer?.name }}</p>
+                </div>
             </section>
 
             <section v-if="more.length" class="mt-10">

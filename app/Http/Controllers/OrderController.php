@@ -33,6 +33,8 @@ class OrderController extends Controller
             'justPlaced' => $request->boolean('placed'),
             'canCancel' => $order->canBeCancelled(),
             'canMarkReceived' => $order->canBeMarkedReceived(),
+            'review' => $order->review,
+            'canReview' => $order->status === Order::DELIVERED && ! $order->review()->exists(),
         ]);
     }
 

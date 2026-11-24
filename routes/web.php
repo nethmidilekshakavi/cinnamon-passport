@@ -100,6 +100,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
     Route::post('/orders/{order}/received', [OrderController::class, 'received'])->name('orders.received');
+    Route::post('/orders/{order}/review', [\App\Http\Controllers\ReviewController::class, 'store'])->name('orders.review');
 });
 
 // Selling: orders for my brand
