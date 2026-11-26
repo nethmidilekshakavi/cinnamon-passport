@@ -30,7 +30,7 @@ Route::get('/verify/{code}', [VerifyController::class, 'show'])->name('verify.sh
 Route::get('/dashboard', function (Request $request) {
     return match ($request->user()->role) {
         'collector' => redirect()->route('collector.home'),
-        'buyer' => redirect()->route('buyer.home'),
+        'buyer' => (auth()->user()->brand ? redirect()->route('seller.dashboard') : redirect()->route('market.index')),
         default => redirect()->route('batches.index'),
     };
 })->middleware(['auth', 'verified'])->name('dashboard');

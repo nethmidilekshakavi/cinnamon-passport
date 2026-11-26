@@ -46,8 +46,8 @@ it('blocks buyers from the simulator', function () {
 it('flags an abnormal SMS batch and keeps a normal one recorded', function () {
     $user = User::factory()->create(['role' => User::ROLE_GROWER]);
 
-    $this->actingAs($user)->post('/sms', ['message' => 'BATCH P1 250KG 12OCT DRY1']);
-    $this->actingAs($user)->post('/sms', ['message' => 'BATCH P2 40KG 11OCT DRY3']);
+    $this->actingAs($user)->post('/sms', ['message' => 'BATCH P1 250KG '.strtoupper(now()->subDays(3)->format('jM')).' DRY1']);
+    $this->actingAs($user)->post('/sms', ['message' => 'BATCH P2 40KG '.strtoupper(now()->subDays(3)->format('jM')).' DRY3']);
 
     $flagged = $user->batches()->where('plot', 'P1')->first();
     $normal = $user->batches()->where('plot', 'P2')->first();
