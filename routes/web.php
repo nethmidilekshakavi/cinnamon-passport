@@ -108,4 +108,10 @@ Route::middleware(['auth', EnsureUserHasBrand::class])->prefix('seller')->name('
     Route::get('/orders', [SellerOrderController::class, 'index'])->name('orders.index');
     Route::post('/orders/{order}/ship', [SellerOrderController::class, 'ship'])->name('orders.ship');
 });
+Route::middleware('auth')->get('/me/role', function () {
+    $brand = auth()->user()->brand;
+
+    return response()->json(['brand' => $brand ? ['name' => $brand->name, 'slug' => $brand->slug] : null]);
+})->name('me.role');
+
 require __DIR__.'/auth.php';

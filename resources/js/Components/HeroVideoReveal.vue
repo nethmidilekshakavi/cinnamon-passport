@@ -7,7 +7,7 @@
 defineProps({
     videos: {
         type: Array,
-        default: () => ['/videos/cinnamon-1.mp4', '/videos/cinnamon-2.mp4', '/videos/cinnamon-3.mp4'],
+        default: () => ['videos/0f0c3dcfbb5828804ee58e2c5d57d50d.mp4', '/videos/87d5bd84b17f0d24927b7aba4b344efb_720w.mp4', '/videos/693641a095fd0633b546b1f6ba39fe6f_720w.mp4'],
     },
     posters: {
         type: Array,
