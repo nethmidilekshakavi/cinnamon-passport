@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import SellerLayout from '@/Layouts/SellerLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 
 defineProps({ products: Array });
@@ -20,7 +20,7 @@ const remove = (product) => {
 <template>
     <Head title="My products" />
 
-    <AuthenticatedLayout>
+    <SellerLayout>
         <div class="py-8">
             <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
                 <div class="mb-6 flex items-center justify-between">
@@ -57,7 +57,7 @@ const remove = (product) => {
                                         <div v-else class="h-10 w-10 rounded bg-gray-100"></div>
                                         <div>
                                             <div class="font-medium">{{ p.name }}</div>
-                                            <div class="text-xs text-gray-500">{{ p.net_quantity }} {{ p.unit }}<span v-if="p.grade"> Â· {{ p.grade }}</span></div>
+                                            <div class="text-xs text-gray-500">{{ p.net_quantity }} {{ p.unit }}<span v-if="p.grade"> · {{ p.grade }}</span></div>
                                         </div>
                                     </div>
                                 </td>
@@ -79,5 +79,5 @@ const remove = (product) => {
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </SellerLayout>
 </template>

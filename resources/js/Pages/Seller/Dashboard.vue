@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import SellerLayout from '@/Layouts/SellerLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
 defineProps({ brand: Object });
@@ -8,7 +8,7 @@ defineProps({ brand: Object });
 <template>
     <Head title="Seller dashboard" />
 
-    <AuthenticatedLayout>
+    <SellerLayout>
         <div class="py-8">
             <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                 <h1 class="text-2xl font-semibold">{{ brand.name }}</h1>
@@ -17,7 +17,7 @@ defineProps({ brand: Object });
 
                 <div class="mt-6 rounded-lg bg-white p-6 shadow">
                     <h2 class="font-semibold">Products ({{ brand.products_count }})</h2>
-                    <div class="mt-4 flex gap-3">
+                    <div class="mt-4 flex flex-wrap gap-3">
                         <Link :href="route('seller.products.index')"
                             class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50">
                             Manage products
@@ -26,9 +26,17 @@ defineProps({ brand: Object });
                             class="rounded-md bg-yellow-600 px-4 py-2 text-sm font-semibold text-white hover:bg-yellow-700">
                             Add product
                         </Link>
+                        <Link :href="route('seller.orders.index')"
+                            class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50">
+                            View orders
+                        </Link>
+                        <Link :href="route('market.brand', brand.slug)"
+                            class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50">
+                            View my public page
+                        </Link>
                     </div>
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </SellerLayout>
 </template>

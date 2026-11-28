@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SellerOrderController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MarketController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\EnsureUserHasBrand;
 use App\Http\Controllers\BrandController;
@@ -14,12 +19,13 @@ use Inertia\Inertia;
 use App\Http\Controllers\StudyController;
 use App\Http\Controllers\ProfilePhotoController;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-    ]);
-});
+Route::get('/', function (\Illuminate\Http\Request $request) {
+    if ($request->user()) {
+        return redirect()->route('dashboard');
+    }
+
+    return app(\App\Http\Controllers\HomeController::class)->index($request);
+})->name('home');
 
 // Public batch verification (QR codes point here). No login needed.
 Route::get('/verify', [VerifyController::class, 'index'])->name('verify.index');
@@ -30,7 +36,7 @@ Route::get('/verify/{code}', [VerifyController::class, 'show'])->name('verify.sh
 Route::get('/dashboard', function (Request $request) {
     return match ($request->user()->role) {
         'collector' => redirect()->route('collector.home'),
-        'buyer' => redirect()->route('buyer.home'),
+        'buyer' => (auth()->user()->brand ? redirect()->route('seller.dashboard') : redirect()->route('market.index')),
         default => redirect()->route('batches.index'),
     };
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -88,4 +94,36 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', EnsureUserHasBrand::class])->prefix('seller')->name('seller.')->group(function () {
     Route::resource('products', ProductController::class)->except(['show']);
 });
+// Public marketplace (no login needed)
+Route::get('/market', [MarketController::class, 'index'])->name('market.index');
+Route::get('/market/{product:slug}', [MarketController::class, 'show'])->name('market.show');
+Route::get('/brands/{brand:slug}', [MarketController::class, 'brand'])->name('market.brand');
+// Buying (login needed)
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout/{product:slug}', [CheckoutController::class, 'create'])->name('checkout.create');
+    Route::post('/checkout/{product:slug}', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::post('/orders/{order}/received', [OrderController::class, 'received'])->name('orders.received');
+    Route::post('/orders/{order}/review', [\App\Http\Controllers\ReviewController::class, 'store'])->name('orders.review');
+});
+
+// Selling: orders for my brand
+Route::middleware(['auth', EnsureUserHasBrand::class])->prefix('seller')->name('seller.')->group(function () {
+    Route::get('/orders', [SellerOrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders/{order}/ship', [SellerOrderController::class, 'ship'])->name('orders.ship');
+});
+Route::middleware('auth')->get('/me/role', function () {
+    $brand = auth()->user()->brand;
+
+    return response()->json(['brand' => $brand ? ['name' => $brand->name, 'slug' => $brand->slug] : null]);
+})->name('me.role');
+
+Route::middleware('guest')->get('/start/{path}', function (string $path) {
+    session(['intent' => $path]);
+
+    return redirect()->route('register');
+})->where('path', 'buyer|seller')->name('start');
+
 require __DIR__.'/auth.php';

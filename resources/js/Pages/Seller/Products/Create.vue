@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import SellerLayout from '@/Layouts/SellerLayout.vue';
 import ProductForm from '@/Components/Seller/ProductForm.vue';
 import { Head } from '@inertiajs/vue3';
 
@@ -9,12 +9,12 @@ defineProps({ options: Object });
 <template>
     <Head title="Add product" />
 
-    <AuthenticatedLayout>
+    <SellerLayout>
         <div class="py-8">
             <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
                 <h1 class="mb-6 text-2xl font-semibold">Add a product</h1>
                 <ProductForm :options="options" />
             </div>
         </div>
-    </AuthenticatedLayout>
+    </SellerLayout>
 </template>
