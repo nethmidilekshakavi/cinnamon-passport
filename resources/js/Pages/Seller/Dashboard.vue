@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import SellerLayout from '@/Layouts/SellerLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
 defineProps({ brand: Object });
@@ -8,7 +8,7 @@ defineProps({ brand: Object });
 <template>
     <Head title="Seller dashboard" />
 
-    <AuthenticatedLayout>
+    <SellerLayout>
         <div class="py-8">
             <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                 <h1 class="text-2xl font-semibold">{{ brand.name }}</h1>
@@ -38,5 +38,5 @@ defineProps({ brand: Object });
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </SellerLayout>
 </template>
