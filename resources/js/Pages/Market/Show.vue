@@ -63,7 +63,7 @@ const badge = {
 
                     <p class="mt-2 text-sm text-[#14241B]/70">
                         Sold by
-                        <Link :href="route('market.brand', product.brand.slug)" class="font-semibold text-[#14503A] underline">
+                        <img v-if="product.brand.logo_path" :src="'/storage/' + product.brand.logo_path" alt="" class="mr-1 inline-block h-6 w-6 rounded-full object-cover align-middle" /><Link :href="route('market.brand', product.brand.slug)" class="font-semibold text-[#14503A] underline">
                             {{ product.brand.name }}
                         </Link>
                         · {{ product.brand.district }}, {{ product.brand.country }}

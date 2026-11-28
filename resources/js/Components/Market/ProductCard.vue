@@ -46,7 +46,7 @@ const quality = {
         <div class="flex flex-1 flex-col p-4">
             <p class="text-[11px] font-semibold uppercase tracking-wider text-[#B5832F]">{{ p.category?.name }}</p>
             <h3 class="mt-1 font-bold leading-snug text-[#14241B]">{{ p.name }}</h3>
-            <p class="mt-1 text-xs text-[#14241B]/60">{{ p.brand?.name }} &middot; {{ p.brand?.district }}</p>
+            <p class="mt-1 flex items-center gap-1.5 text-xs text-[#14241B]/60"><img v-if="p.brand?.logo_path" :src="'/storage/' + p.brand.logo_path" alt="" class="h-5 w-5 rounded-full object-cover" />{{ p.brand?.name }} &middot; {{ p.brand?.district }}</p>
 
             <div class="mt-2 flex flex-wrap gap-1.5">
                 <span class="rounded-full px-2.5 py-0.5 text-[11px] font-medium capitalize" :class="quality[p.quality_level]">

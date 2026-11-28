@@ -21,7 +21,7 @@ class HomeController extends Controller
 
         $featured = Product::query()
             ->published()
-            ->with(['brand:id,name,slug,district,country', 'category:id,name,slug'])
+            ->with(['brand:id,name,slug,logo_path,district,country', 'category:id,name,slug'])
             ->orderByDesc('id')
             ->limit(4)
             ->get();

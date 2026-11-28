@@ -13,7 +13,7 @@ class MarketController extends Controller
 {
     private const SORTS = ['newest', 'price_asc', 'price_desc'];
 
-    private const BRAND_COLUMNS = 'brand:id,name,slug,district,country';
+    private const BRAND_COLUMNS = 'brand:id,name,slug,logo_path,district,country';
 
     public function index(Request $request): Response
     {
@@ -78,7 +78,7 @@ class MarketController extends Controller
 
         abort_unless($product->is_published || $isOwner, 404);
 
-        $product->load(['brand:id,name,slug,district,country,description', 'category:id,name,slug']);
+        $product->load(['brand:id,name,slug,logo_path,district,country,description', 'category:id,name,slug']);
 
         $more = Product::query()
             ->published()

@@ -112,6 +112,31 @@ Route::middleware('auth')->group(function () {
 // Selling: orders for my brand
 Route::middleware(['auth', EnsureUserHasBrand::class])->prefix('seller')->name('seller.')->group(function () {
     Route::get('/orders', [SellerOrderController::class, 'index'])->name('orders.index');
+    Route::post('/logo', [\App\Http\Controllers\BrandLogoController::class, 'store'])->name('logo.store');
+    Route::delete('/logo', [\App\Http\Controllers\BrandLogoController::class, 'destroy'])->name('logo.destroy');
+    Route::get('/stats', function () {
+        $brandId = auth()->user()->brand->id;
+        $orders = fn () => \App\Models\Order::where('brand_id', $brandId);
+        $reviews = fn () => \App\Models\Review::where('brand_id', $brandId);
+
+        return response()->json([
+            'orders' => [
+                'total' => $orders()->count(),
+                'to_ship' => $orders()->where('status', 'placed')->count(),
+                'shipped' => $orders()->where('status', 'shipped')->count(),
+                'delivered' => $orders()->where('status', 'delivered')->count(),
+            ],
+            'revenue' => (float) $orders()->where('status', 'delivered')->sum('total'),
+            'rating' => [
+                'average' => round((float) $reviews()->avg('rating'), 1),
+                'count' => $reviews()->count(),
+            ],
+            'low_stock' => \App\Models\Product::where('brand_id', $brandId)->where('stock', '<=', 5)
+                ->orderBy('stock')->take(5)->get(['id', 'name', 'stock']),
+            'recent' => $orders()->latest('id')->take(5)
+                ->get(['id', 'order_number', 'product_name', 'quantity', 'total', 'status', 'placed_at']),
+        ]);
+    })->name('stats');
     Route::post('/orders/{order}/ship', [SellerOrderController::class, 'ship'])->name('orders.ship');
 });
 Route::middleware('auth')->get('/me/role', function () {
