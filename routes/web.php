@@ -19,7 +19,13 @@ use Inertia\Inertia;
 use App\Http\Controllers\StudyController;
 use App\Http\Controllers\ProfilePhotoController;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', function (\Illuminate\Http\Request $request) {
+    if ($request->user()) {
+        return redirect()->route('dashboard');
+    }
+
+    return app(\App\Http\Controllers\HomeController::class)->index($request);
+})->name('home');
 
 // Public batch verification (QR codes point here). No login needed.
 Route::get('/verify', [VerifyController::class, 'index'])->name('verify.index');
@@ -113,5 +119,11 @@ Route::middleware('auth')->get('/me/role', function () {
 
     return response()->json(['brand' => $brand ? ['name' => $brand->name, 'slug' => $brand->slug] : null]);
 })->name('me.role');
+
+Route::middleware('guest')->get('/start/{path}', function (string $path) {
+    session(['intent' => $path]);
+
+    return redirect()->route('register');
+})->where('path', 'buyer|seller')->name('start');
 
 require __DIR__.'/auth.php';

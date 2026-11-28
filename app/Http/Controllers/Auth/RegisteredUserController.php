@@ -66,6 +66,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect('/');
+        return redirect(session()->pull('intent') === 'seller' ? route('seller.create') : '/');
     }
 }
